@@ -15,12 +15,12 @@ class _MineTabWidgetState extends State<MineTab> {
   String xingzuo = "未知";
 
   Future<String> makeRequest() async {
-    String url = "http://localhost:8690/user/info";
+    String url = "http://localhost:8080/api/account/info?uid=1";
     var response = await http.get(
       Uri.encodeFull(url),
     );
     Map<String, dynamic> user = json.decode(response.body);
-    name = user['data']["username"];
+    name = user["nickName"];
   }
 
   @override
