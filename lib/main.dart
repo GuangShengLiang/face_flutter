@@ -1,26 +1,15 @@
-import 'package:face_flutter/MyHomePage.dart';
+import 'package:face_flutter/splash.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MaterialApp(
-  title: 'Flutter Tutorial', // used by the OS task switcher
-  home: new MyHomePage(),
-));
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Welcome to Flutter',
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Welcome'),
-        ),
-        body: new Center(
-          child: new Text('Hello World'),
-        ),
+void main() {
+  runApp(new MaterialApp(
+      title: "Boss直聘",
+      theme: new ThemeData(
+        primaryIconTheme: const IconThemeData(color: Colors.white),
+        brightness: Brightness.light,
+        primaryColor: Colors.green,
+        accentColor: Colors.cyan,
       ),
-    );
-  }
+      home: new SplashPage()));
 }
 
