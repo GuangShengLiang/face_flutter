@@ -1,8 +1,7 @@
-import 'dart:convert';
-
+import 'package:face_flutter/api/AccountAPI.dart';
+import 'package:face_flutter/model/Account.dart';
 import 'package:face_flutter/view/mine_edit.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class MineTab extends StatefulWidget {
   @override
@@ -10,34 +9,33 @@ class MineTab extends StatefulWidget {
 }
 
 class _MineTabWidgetState extends State<MineTab> {
-  String name = "";
-  String year ="未知";
-  String xingzuo = "未知";
+  Account acc;
 
-  Future<String> makeRequest() async {
-    String url = "http://localhost:8080/api/account/info?uid=1";
-    var response = await http.get(
-      Uri.encodeFull(url),
-    );
-    Map<String, dynamic> user = json.decode(response.body);
-    name = user["nickName"];
+  loadData() async {
+    acc = await new AccountAPI().accountInfo();
+  }
+
+  @override
+  Future initState() {
+    loadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    makeRequest();
     Widget titleSection = new Container(
         padding: const EdgeInsets.all(8.0),
         child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           new Container(
             padding: const EdgeInsets.all(4.0),
-            child: new Text( name,
+            child: new Text(
+              acc.nickName,
               style: new TextStyle(fontSize: 12, color: Colors.red),
             ),
           ),
           new Container(
             padding: const EdgeInsets.all(4.0),
-            child: new Text( year,
+            child: new Text(
+              acc.year,
               style: new TextStyle(
                 fontSize: 12,
                 color: Colors.orange,
@@ -47,7 +45,8 @@ class _MineTabWidgetState extends State<MineTab> {
           new Container(
             padding: const EdgeInsets.all(4.0),
             color: Colors.blue,
-            child: new Text( xingzuo,
+            child: new Text(
+              acc.constellation,
               style: new TextStyle(
                 fontSize: 12,
                 color: Colors.white,

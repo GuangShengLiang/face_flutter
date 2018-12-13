@@ -1,6 +1,26 @@
+import 'package:face_flutter/api/AccountAPI.dart';
+import 'package:face_flutter/model/Account.dart';
 import 'package:flutter/material.dart';
 
-class MineEdit extends StatelessWidget {
+class MineEdit extends StatefulWidget {
+  @override
+  MineEditState createState() {
+    return MineEditState();
+  }
+}
+
+class MineEditState extends State<MineEdit> {
+  final _formKey = GlobalKey<FormState>();
+  Account acc;
+
+  loadData() async {
+    acc = await new AccountAPI().accountInfo();
+  }
+
+  @override
+  Future initState() {
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +35,8 @@ class MineEdit extends StatelessWidget {
             icon: const Icon(Icons.save),
             tooltip: 'save',
             onPressed: () {
-//              Navigator.pop(context);
+              new AccountAPI().updateAccountInfo(acc.nickName);
+              print("saved");
             },
           ),
         ],
@@ -28,54 +49,35 @@ class MineEdit extends StatelessWidget {
             height: 240.0,
             fit: BoxFit.cover,
           ),
-          MyCustomForm()
+          new Form(
+              key: _formKey,
+              child: new Column(
+                children: <Widget>[
+                  new TextFormField(
+                    maxLength: 10,
+                    decoration: new InputDecoration(
+                        hintText: '昵称'
+                    ),
+                    onSaved: (val) {
+                      acc.nickName = val;
+                    },
+                  ),
+                  new TextFormField(
+                    maxLength: 10,
+                    decoration: new InputDecoration(
+                        hintText: '生日'
+                    ),
+                  ),
+                  new TextFormField(
+                    maxLength: 10,
+                    decoration: new InputDecoration(
+                        hintText: '职业'
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );
-  }
-}
-// Create a Form Widget
-class MyCustomForm extends StatefulWidget {
-  @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
-  }
-}
-// Create a corresponding State class. This class will hold the data related to
-// the form.
-class MyCustomFormState extends State<MyCustomForm> {
-  // Create a global key that will uniquely identify the Form widget and allow
-  // us to validate the form
-  //
-  // Note: This is a GlobalKey<FormState>, not a GlobalKey<MyCustomFormState>!
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey we created above
-    return new Form(
-        key: _formKey,
-        child: new Column(
-          children: <Widget>[
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '昵称'
-              ),
-            ),
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '生日'
-              ),
-            ),
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '职业'
-              ),
-            ),
-          ],
-        ));
   }
 }
