@@ -15,6 +15,12 @@ class Account {
     this.uid,
     this.nickName,
   });
+//  String get nickName{
+//    return nickName;
+//  }
+//  void set nickName(String nickName){
+//    this.nickName_=nickName;
+//  }
 //  Map<String, dynamic> toJson() => <String, dynamic>{
 //        'uid': uid,
 //        'nickName': nickName,

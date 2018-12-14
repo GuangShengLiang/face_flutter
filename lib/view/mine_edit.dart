@@ -14,7 +14,18 @@ class MineEditState extends State<MineEdit> {
   Account acc;
 
   loadData() async {
-    acc = await new AccountAPI().accountInfo();
+    acc = await new AccountAPI().info();
+  }
+  String _value = '';
+  Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        locale: Locale('zh'),
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2016),
+        lastDate: new DateTime(2019)
+    );
+    if(picked != null) setState(() => _value = picked.toString());
   }
 
   @override
@@ -35,7 +46,8 @@ class MineEditState extends State<MineEdit> {
             icon: const Icon(Icons.save),
             tooltip: 'save',
             onPressed: () {
-              new AccountAPI().updateAccountInfo(acc.nickName);
+              _formKey.currentState.save();
+              new AccountAPI().updateInfo(acc.nickName);
               print("saved");
             },
           ),
@@ -68,6 +80,7 @@ class MineEditState extends State<MineEdit> {
                         hintText: '生日'
                     ),
                   ),
+                  new RaisedButton(onPressed: _selectDate, child: new Text('Click me'),),
                   new TextFormField(
                     maxLength: 10,
                     decoration: new InputDecoration(

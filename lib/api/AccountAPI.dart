@@ -1,47 +1,36 @@
-import 'dart:convert';
+import 'dart:io';
 import 'package:face_flutter/model/Account.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-//
-//import 'package:dio/dio.dart';
-//import 'package:face_flutter/model/Account.dart';
 //
 class AccountAPI {
-//
-//  Future<String> accountInfo() async {
-//    String url = "http://localhost:8080/api/account/info?uid=1";
-////    var response = await http.get(
-////      Uri.encodeFull(url),
-////    );
-//    var dio = new Dio();
-//    Response response;
-//    response=await dio.get(url);
-//    print(response.data);
-//    Account a =Account.fromJson(response.data) ;
-//  }
-//
-  Future<Account> accountInfo() async {
-    String url = "http://localhost:8080/api/account/info?uid=1";
-    var response = await http.get(
-      Uri.encodeFull(url),
-    );
-//    var dio = new Dio();
-//    Response response;
-//    response=await dio.get(url);
-//    print(response.data);
+  static String baseUrl = "http://localhost:8080/api";
+  static String infoUrl="/account/info";
+
+  static Options options = new Options(
+      baseUrl: baseUrl,
+      connectTimeout: 3000,
+      receiveTimeout: 3000,
+      contentType: ContentType.json,
+      responseType: ResponseType.JSON);
+  var dio = new Dio(options);
+
+  Future<Account> info() async {
+    Response response = await dio.get(infoUrl, data: {"uid": 1});
     Account a = new Account();
-    Map<String, dynamic> user = json.decode(response.body);
-    a.nickName = user["nickName"];
-    a.year = user['year'];
-    a.constellation = user['constellation'];
+    a.nickName = response.data['nickName'];
+    a.year = response.data['year'];
+    a.constellation = response.data['constellation'];
     return a;
+//  return response.data;
   }
 
-  Future<void> updateAccountInfo(String nickName) async {
-    var url = "http://localhost:8080/api/account/info";
-    http.post(url, body: {"nickName": nickName, "gender":1,"birthday":"2000-01-01"},headers: {"token":"a"})
-        .then((response) {
-      print("Response body: ${response.statusCode}");
-    });
+  Future<void> updateInfo(String nickName) async {
+    await dio.post(infoUrl,data: {"nickName": nickName, "gender": 1, "birthday": "2000-01-01"},options:new Options(headers: {"token": "a"}));
+//    http.post(infoUrl,
+//        body: {"nickName": nickName, "gender": 1, "birthday": "2000-01-01"},
+//        headers: {"token": "a"}).then((response) {
+//      print("Response body: ${response.statusCode}");
+//    });
   }
 }

@@ -12,7 +12,8 @@ class _MineTabWidgetState extends State<MineTab> {
   Account acc;
 
   loadData() async {
-    acc = await new AccountAPI().accountInfo();
+//    acc = await new AccountAPI().accountInfo();
+    acc = await new AccountAPI().info();
   }
 
   @override
