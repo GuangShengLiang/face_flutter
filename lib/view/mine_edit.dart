@@ -21,8 +21,8 @@ class MineEditState extends State<MineEdit> {
     DateTime picked = await showDatePicker(
         locale: Locale('zh'),
         context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(2016),
+        initialDate: new DateTime(2000),
+        firstDate: new DateTime(1980),
         lastDate: new DateTime(2019)
     );
     if(picked != null) setState(() => _value = picked.toString());
@@ -46,6 +46,7 @@ class MineEditState extends State<MineEdit> {
             icon: const Icon(Icons.save),
             tooltip: 'save',
             onPressed: () {
+              print(_value);
               _formKey.currentState.save();
               new AccountAPI().updateInfo(acc.nickName);
               print("saved");
