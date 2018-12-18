@@ -1,6 +1,36 @@
+import 'package:face_flutter/model/Account.dart';
 import 'package:flutter/material.dart';
 
-class ActivityAdd extends StatelessWidget {
+class ActivityAdd extends StatefulWidget{
+  @override
+  ActivityAddState createState() {
+    return ActivityAddState();
+  }
+}
+
+class ActivityAddState extends State<ActivityAdd> {
+  final _formKey = GlobalKey<FormState>();
+  Activity acc= new Activity();
+
+  loadData() async {
+//    acc = await new AccountAPI().info();
+  }
+  String _value = '';
+  Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        locale: Locale('zh'),
+        context: context,
+        initialDate: new DateTime(2000),
+        firstDate: new DateTime(1980),
+        lastDate: new DateTime(2019)
+    );
+    if(picked != null) setState(() => _value = picked.toString());
+  }
+
+  @override
+  Future initState() {
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +45,8 @@ class ActivityAdd extends StatelessWidget {
             icon: const Icon(Icons.save),
             tooltip: 'save',
             onPressed: () {
+              _formKey.currentState.save();
+              print("saved");
             },
           ),
         ],
@@ -27,68 +59,43 @@ class ActivityAdd extends StatelessWidget {
             height: 240.0,
             fit: BoxFit.cover,
           ),
-          MyCustomForm()
+          new Form(
+              key: _formKey,
+              child: new Column(
+                children: <Widget>[
+                  new TextFormField(
+                    maxLength: 10,
+                    decoration: new InputDecoration(
+                        hintText: 'title'
+                    ),
+                    onSaved: (val) {
+                      acc.title = val;
+                    },
+                  ),
+                  new TextFormField(
+                    maxLength: 10,
+                    decoration: new InputDecoration(
+                        hintText: 'address'
+                    ),
+                    onSaved: (val){
+                      acc.address=val;
+                    },
+                  ),
+                  new Row(
+                    children: <Widget>[
+                      new TextFormField(
+                        maxLength: 10,
+                        decoration: new InputDecoration(
+                          hintText: 'stime',
+                        ),
+                      ),
+                      new RaisedButton(onPressed: _selectDate, child: new Text('日期'),),
+                    ],
+                  ),
+                ],
+              )),
         ],
       ),
-    );
-  }
-}
-// Create a Form Widget
-class MyCustomForm extends StatefulWidget {
-  @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
-  }
-}
-// Create a corresponding State class. This class will hold the data related to
-// the form.
-class MyCustomFormState extends State<MyCustomForm> {
-  // Create a global key that will uniquely identify the Form widget and allow
-  // us to validate the form
-  //
-  // Note: This is a GlobalKey<FormState>, not a GlobalKey<MyCustomFormState>!
-  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  String name;
-  String time;
-  String address;
-
-  @override
-  Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey we created above
-    return new Form(
-        key: _formKey,
-        child: new Column(
-          children: <Widget>[
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '活动名称'
-              ),
-              onSaved: (val) {
-                name = val;
-              },
-            ),
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '时间'
-              ),
-              onSaved: (val) {
-                time = val;
-              },
-            ),
-            new TextFormField(
-              maxLength: 10,
-              decoration: new InputDecoration(
-                  hintText: '地点'
-              ),
-              onSaved: (val) {
-                address = val;
-              },
-            ),
-          ],
-        ),
-
     );
   }
 }

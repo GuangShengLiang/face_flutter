@@ -3,11 +3,11 @@
 //@JsonSerializable(includeIfNull: false)
 class Account {
   int uid;
-  String nickName;
-  String year;
-  String constellation;
-  String avatarUrl;
-  String birthday;
+  String nickName="";
+  String year="";
+  String constellation="";
+  String avatarUrl="";
+  String birthday="";
   int age;
   int status;
   int gender;
@@ -27,4 +27,12 @@ class Account {
 //      };
 //  factory Account.fromJson(Map<String, dynamic> json) => new Account(
 //      uid: json['uid'] as int, nickName: json['nickName'] as String);
+}
+
+class Activity{
+  int id;
+  String title;
+  String address;
+  String stime;
+  String etime;
 }

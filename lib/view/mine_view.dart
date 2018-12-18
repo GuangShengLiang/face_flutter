@@ -1,4 +1,4 @@
-import 'package:face_flutter/api/AccountAPI.dart';
+import 'package:face_flutter/api/AccountClient.dart';
 import 'package:face_flutter/model/Account.dart';
 import 'package:face_flutter/view/mine_edit.dart';
 import 'package:flutter/material.dart';
@@ -11,18 +11,21 @@ class MineTab extends StatefulWidget {
 class _MineTabWidgetState extends State<MineTab> {
   Account acc;
 
-  loadData() async {
-//    acc = await new AccountAPI().accountInfo();
-    acc = await new AccountAPI().info();
-  }
-
   @override
-  Future initState() {
-    loadData();
+  void initState() {
+    super.initState();
+    new AccountClient().info().then((account) {
+      setState(() {
+        acc = account;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (acc == null) {
+      return new Container();
+    }
     Widget titleSection = new Container(
         padding: const EdgeInsets.all(8.0),
         child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

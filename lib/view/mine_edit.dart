@@ -1,4 +1,4 @@
-import 'package:face_flutter/api/AccountAPI.dart';
+import 'package:face_flutter/api/AccountClient.dart';
 import 'package:face_flutter/model/Account.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +13,6 @@ class MineEditState extends State<MineEdit> {
   final _formKey = GlobalKey<FormState>();
   Account acc;
 
-  loadData() async {
-    acc = await new AccountAPI().info();
-  }
   String _value = '';
   Future _selectDate() async {
     DateTime picked = await showDatePicker(
@@ -23,14 +20,18 @@ class MineEditState extends State<MineEdit> {
         context: context,
         initialDate: new DateTime(2000),
         firstDate: new DateTime(1980),
-        lastDate: new DateTime(2019)
-    );
-    if(picked != null) setState(() => _value = picked.toString());
+        lastDate: new DateTime(2019));
+    if (picked != null) setState(() => _value = picked.toString());
   }
 
   @override
-  Future initState() {
-    loadData();
+  void initState() {
+    super.initState();
+    new AccountClient().info().then((account) {
+      setState(() {
+        acc = account;
+      });
+    });
   }
 
   @override
@@ -46,9 +47,8 @@ class MineEditState extends State<MineEdit> {
             icon: const Icon(Icons.save),
             tooltip: 'save',
             onPressed: () {
-              print(_value);
               _formKey.currentState.save();
-              new AccountAPI().updateInfo(acc.nickName);
+              new AccountClient().updateInfo(acc.nickName);
               print("saved");
             },
           ),
@@ -68,25 +68,22 @@ class MineEditState extends State<MineEdit> {
                 children: <Widget>[
                   new TextFormField(
                     maxLength: 10,
-                    decoration: new InputDecoration(
-                        hintText: '昵称'
-                    ),
+                    decoration: new InputDecoration(hintText: '昵称'),
+                    initialValue: acc.nickName,
                     onSaved: (val) {
                       acc.nickName = val;
                     },
                   ),
                   new TextFormField(
                     maxLength: 10,
+                    initialValue: _value,
                     decoration: new InputDecoration(
-                        hintText: '生日'
+                      hintText: '生日',
                     ),
                   ),
-                  new RaisedButton(onPressed: _selectDate, child: new Text('Click me'),),
                   new TextFormField(
                     maxLength: 10,
-                    decoration: new InputDecoration(
-                        hintText: '职业'
-                    ),
+                    decoration: new InputDecoration(hintText: '职业'),
                   ),
                 ],
               )),
