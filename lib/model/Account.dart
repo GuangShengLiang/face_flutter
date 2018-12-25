@@ -36,3 +36,12 @@ class Activity{
   String stime;
   String etime;
 }
+class Relation{
+  int id;
+  int uid;
+  int rid;
+  int type;
+  String remark;
+  String rname;
+
+}
