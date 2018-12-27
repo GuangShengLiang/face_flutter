@@ -44,12 +44,14 @@ class _FriendTabWidgetState extends State<FriendTab> {
           ),
         ],
       ),
-      body: friendList(context)
+      body: new ListView(
+        children: friendList(context),
+      ),
     );
   }
   friendList(BuildContext context) {
     List<Widget> l = new List<Widget>();
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < rs.length; i++) {
       l.add(new GestureDetector(
         onTap: () {
           Navigator.push(
