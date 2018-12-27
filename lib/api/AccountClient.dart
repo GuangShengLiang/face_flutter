@@ -6,7 +6,7 @@ class AccountClient {
   final String baseUrl = "http://localhost:8080/api";
   final String infoUrl = "/account/info";
   final String activityUrl = "/activity/info";
-  final String relationsUrl = "/acount/relaions";
+  final String relationsUrl = "/account/relations";
   var dio;
 
   AccountClient() {
@@ -24,12 +24,12 @@ class AccountClient {
       options.headers["token"] = "a";
       return options;
     };
-    dio.interceptor.response.onError = (DioError e){
+    dio.interceptor.response.onError = (DioError e) {
       // Do something with response error
-      if(e.response.statusCode==601){
+      if (e.response.statusCode == 601) {
         print(e.response.data);
       }
-      return  e;
+      return e;
     };
   }
 
@@ -46,19 +46,22 @@ class AccountClient {
     await dio.post(infoUrl,
         data: {"nickName": nickName, "gender": 1, "birthday": "2000-01-01"});
   }
+
   Future<List<Relation>> relations() async {
-  Response<List> response = await dio.get(relationsUrl, data: {"uid": 1,"type":1});
-  List<Relation> rst = new List();
-  for(int i=0;i<response.data.length;i++){
-  Relation a = new Relation();
-  a.id = response.data[i]['id'];
-  a.uid = response.data[i]['uid'];
-  a.rid = response.data[i]['rid'];
-  a.type = response.data[i]['type'];
-  a.rname = response.data[i]['rname'];
-  rst.add(a);
-  }
-  return rst;
+    Response response =
+        await dio.get(relationsUrl, data: {"uid": 1, "type": 1});
+    print(response.data);
+    List<Relation> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Relation a = new Relation();
+      a.id = response.data[i]['id'];
+      a.uid = response.data[i]['uid'];
+      a.rid = response.data[i]['rid'];
+      a.type = response.data[i]['type'];
+      a.rname = response.data[i]['rname'];
+      rst.add(a);
+    }
+    return rst;
   }
 
   Future<Activity> activityInfo() async {

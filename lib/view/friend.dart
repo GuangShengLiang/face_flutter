@@ -1,9 +1,30 @@
+import 'package:face_flutter/api/AccountClient.dart';
+import 'package:face_flutter/model/Account.dart';
 import 'package:face_flutter/view/friend_detail.dart';
 import 'package:flutter/material.dart';
 
-class FriendTab extends StatelessWidget {
+class FriendTab extends StatefulWidget{
+  @override
+  _FriendTabWidgetState createState() => new _FriendTabWidgetState();
+}
+class _FriendTabWidgetState extends State<FriendTab> {
+  List<Relation> rs;
+  @override
+  void initState() {
+    super.initState();
+    new AccountClient().relations().then((rst) {
+      setState(() {
+        rs = rst;
+        print(rs);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (rs == null) {
+      return new Container();
+    }
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
@@ -23,76 +44,37 @@ class FriendTab extends StatelessWidget {
           ),
         ],
       ),
-      body: new ListView(
-        children: [
-          new GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new FriendDetail()),
-              );
-            },
-            child: new Container(
-              child: new ListTile(
-                title: new Text("张三的歌"),
-                leading: new Image.asset(
-                  "assets/images/a001.jpg",
-                  width: 35.0,
-                  height: 35.0,
-                ),
-              ),
-              height: 50.0,
-              color: Colors.white,
-            ),
-          ),
-          new Divider(
-            height: 1,
-          ),
-          new Container(
-            child: new ListTile(
-              title: new Text("班主任"),
-              leading: new Image.asset(
-                "assets/images/a002.jpg",
-                width: 35.0,
-                height: 35.0,
-              ),
-            ),
-            height: 50.0,
-            color: Colors.white,
-          ),
-          new Divider(
-            height: 1,
-          ),
-          new Container(
-            child: new ListTile(
-              title: new Text("LebronJames"),
-              leading: new Image.asset(
-                "assets/images/a003.jpg",
-                width: 35.0,
-                height: 35.0,
-              ),
-            ),
-            height: 50.0,
-            color: Colors.white,
-          ),
-          new Divider(
-            height: 1,
-          ),
-          new Container(
-            child: new ListTile(
-              title: new Text("石甲州"),
-              leading: new Image.asset(
-                "assets/images/a004.jpg",
-                width: 35.0,
-                height: 35.0,
-              ),
-            ),
-            height: 50.0,
-            color: Colors.white,
-          )
-        ],
-      ),
+      body: friendList(context)
     );
   }
-}
+  friendList(BuildContext context) {
+    List<Widget> l = new List<Widget>();
+    for (var i = 0; i < 3; i++) {
+      l.add(new GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new FriendDetail()),
+          );
+        },
+        child:  new Container(
+          child: new ListTile(
+            title: new Text(rs[i].rname),
+            leading: new Image.asset(
+              "assets/images/a002.jpg",
+              width: 35.0,
+              height: 35.0,
+            ),
+          ),
+          height: 50.0,
+          color: Colors.white,
+        ),
+      ));
+      l.add(new Divider(
+        height: 4,
+      ));
+    }
+    return l;
+  }
+  }
