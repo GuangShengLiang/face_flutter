@@ -1,16 +1,39 @@
+import 'package:face_flutter/api/AccountClient.dart';
+import 'package:face_flutter/model/Account.dart';
 import 'package:flutter/material.dart';
 
-class ActivityDetail extends StatelessWidget {
-  final int aid;
+class ActivityDetail extends StatefulWidget{
+  final String aid;
+  ActivityDetail({Key key, @required this.aid}):super(key:key);
+  @override
+  _ActivityDetailState createState() => new _ActivityDetailState(aid:aid);
+}
+
+class _ActivityDetailState extends State<ActivityDetail> {
+  final String aid;
+  Activity acc;
+
+  @override
+  void initState() {
+    super.initState();
+    new AccountClient().activityInfo(aid).then((rst) {
+      setState(() {
+        acc = rst;
+      });
+    });
+  }
   String address = "亮马桥";
   String period = '2018-11-10 10:00--2018-11-10 13:00';
   String partner = "张三，李四";
 
-  ActivityDetail({Key key, @required this.aid}):super(key:key);
+  _ActivityDetailState({Key key, @required this.aid});
 
 
   @override
   Widget build(BuildContext context) {
+    if (acc == null) {
+      return new Container();
+    }
     Widget title= new Container(
         padding: const EdgeInsets.all(8.0),
         child: new Row(

@@ -1,3 +1,4 @@
+import 'package:face_flutter/api/AccountClient.dart';
 import 'package:face_flutter/model/Account.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,8 @@ class ActivityAdd extends StatefulWidget{
 
 class ActivityAddState extends State<ActivityAdd> {
   final _formKey = GlobalKey<FormState>();
-  Activity acc= new Activity();
+  final Activity act = new Activity();
 
-  loadData() async {
-//    acc = await new AccountAPI().info();
-  }
   String _value = '';
   Future _selectDate() async {
     DateTime picked = await showDatePicker(
@@ -28,17 +26,12 @@ class ActivityAddState extends State<ActivityAdd> {
   }
 
   @override
-  Future initState() {
-    loadData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
-        title: new Text('profile',
+        title: new Text('新增活动',
             style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         actions: <Widget>[
           new IconButton(
@@ -46,7 +39,7 @@ class ActivityAddState extends State<ActivityAdd> {
             tooltip: 'save',
             onPressed: () {
               _formKey.currentState.save();
-              print("saved");
+              new AccountClient().addActiviy(act);
             },
           ),
         ],
@@ -69,7 +62,7 @@ class ActivityAddState extends State<ActivityAdd> {
                         hintText: 'title'
                     ),
                     onSaved: (val) {
-                      acc.title = val;
+                      act.title = val;
                     },
                   ),
                   new TextFormField(
@@ -78,7 +71,7 @@ class ActivityAddState extends State<ActivityAdd> {
                         hintText: 'address'
                     ),
                     onSaved: (val){
-                      acc.address=val;
+                      act.address=val;
                     },
                   ),
                   new Row(

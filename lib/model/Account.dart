@@ -1,8 +1,5 @@
-//import 'package:json_annotation/json_annotation.dart';
-
-//@JsonSerializable(includeIfNull: false)
 class Account {
-  int uid;
+  String uid;
   String nickName="";
   String year="";
   String constellation="";
@@ -15,31 +12,20 @@ class Account {
     this.uid,
     this.nickName,
   });
-//  String get nickName{
-//    return nickName;
-//  }
-//  void set nickName(String nickName){
-//    this.nickName_=nickName;
-//  }
-//  Map<String, dynamic> toJson() => <String, dynamic>{
-//        'uid': uid,
-//        'nickName': nickName,
-//      };
-//  factory Account.fromJson(Map<String, dynamic> json) => new Account(
-//      uid: json['uid'] as int, nickName: json['nickName'] as String);
 }
 
 class Activity{
-  int id;
+  String aid;
   String title;
+  String subTitle;
   String address;
   String stime;
   String etime;
 }
 class Relation{
   int id;
-  int uid;
-  int rid;
+  String uid;
+  String rid;
   int type;
   String remark;
   String rname;

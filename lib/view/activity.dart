@@ -1,10 +1,32 @@
+import 'package:face_flutter/api/AccountClient.dart';
+import 'package:face_flutter/model/Account.dart';
 import 'package:face_flutter/view/activity_add.dart';
 import 'package:face_flutter/view/activity_detail.dart';
 import 'package:flutter/material.dart';
 
-class ActivityTab extends StatelessWidget {
+class ActivityTab extends StatefulWidget{
+  @override
+  _ActivityTabWidgetState createState() => new _ActivityTabWidgetState();
+}
+
+class _ActivityTabWidgetState extends State<ActivityTab> {
+  List<Activity> acts;
+
+  @override
+  void initState() {
+    new AccountClient().activities().then((rst) {
+      setState(() {
+        acts = rst;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (acts == null) {
+      return new Container();
+    }
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
@@ -32,13 +54,14 @@ class ActivityTab extends StatelessWidget {
 
   activityList(BuildContext context) {
     var l = new List<Widget>();
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < acts.length; i++) {
+      Activity a = acts[i];
       l.add(new GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new ActivityDetail(aid: i)),
+                builder: (context) => new ActivityDetail(aid: a.aid)),
           );
         },
         child: new Container(
@@ -63,7 +86,7 @@ class ActivityTab extends StatelessWidget {
                         child: new Container(
                       padding: const EdgeInsets.all(4.0),
                       child: new Text(
-                        'Oeschinen Lake Campground' + i.toString(),
+                        a.title,
                         style: new TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -86,7 +109,7 @@ class ActivityTab extends StatelessWidget {
                           new Expanded(
                             child: new Container(
                                 padding: const EdgeInsets.only(left: 8),
-                                child: new Text("亮马桥",
+                                child: new Text(a.address,
                                     textAlign: TextAlign.left,
                                     style: new TextStyle(
                                       color: Colors.grey,

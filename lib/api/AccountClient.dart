@@ -5,8 +5,9 @@ import 'package:dio/dio.dart';
 class AccountClient {
   final String baseUrl = "http://localhost:8080/api";
   final String infoUrl = "/account/info";
-  final String activityUrl = "/activity/info";
   final String relationsUrl = "/account/relations";
+  final String activityUrl = "/activity/activity";
+  final String activitiesUrl = "/activity/list";
   var dio;
 
   AccountClient() {
@@ -34,7 +35,7 @@ class AccountClient {
   }
 
   Future<Account> info() async {
-    Response response = await dio.get(infoUrl, data: {"uid": 1});
+    Response response = await dio.get(infoUrl, data: {"uid": "1"});
     Account a = new Account();
     a.nickName = response.data['nickName'];
     a.year = response.data['year'];
@@ -43,14 +44,13 @@ class AccountClient {
   }
 
   Future<void> updateInfo(String nickName) async {
-    await dio.post(infoUrl,
+    await dio.put(infoUrl,
         data: {"nickName": nickName, "gender": 1, "birthday": "2000-01-01"});
   }
 
   Future<List<Relation>> relations() async {
     Response response =
-        await dio.get(relationsUrl, data: {"uid": 1, "type": 1});
-    print(response.data);
+        await dio.get(relationsUrl, data: {"uid": "1", "type": 1});
     List<Relation> rst = new List();
     for (int i = 0; i < response.data.length; i++) {
       Relation a = new Relation();
@@ -64,8 +64,23 @@ class AccountClient {
     return rst;
   }
 
-  Future<Activity> activityInfo() async {
-    Response response = await dio.get(activityUrl, data: {"id": 1});
+  Future<List<Activity>> activities() async {
+    Response response = await dio.get(activitiesUrl);
+    List<Activity> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Activity a = new Activity();
+      a.aid = response.data[i]['aid'];
+      a.address = response.data[i]['address'];
+      a.title = response.data[i]['title'];
+      a.stime = response.data[i]['stime'];
+      a.etime = response.data[i]['etime'];
+      rst.add(a);
+    }
+    return rst;
+  }
+
+  Future<Activity> activityInfo(String aid) async {
+    Response response = await dio.get(activityUrl, data: {"aid": aid});
     Activity a = new Activity();
     a.title = response.data['title'];
     a.stime = response.data['stime'];
@@ -74,12 +89,12 @@ class AccountClient {
     return a;
   }
 
-  Future<void> updateActiviyInfo(String title) async {
+  Future<void> addActiviy(Activity act) async {
     await dio.post(activityUrl, data: {
-      "title": title,
-      "address": "sanlitun",
-      "stime": "2000-01-01",
-      "etime": "2000-01-09"
+      "title": act.title,
+      "address": act.address,
+      "stime": act.stime,
+      "etime": act.etime,
     });
   }
 }
