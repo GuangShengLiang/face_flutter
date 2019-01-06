@@ -22,7 +22,6 @@ class _ActivityDetailState extends State<ActivityDetail> {
       });
     });
   }
-  String address = "亮马桥";
   String period = '2018-11-10 10:00--2018-11-10 13:00';
   String partner = "张三，李四";
 
@@ -40,7 +39,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
             children: [
               new Container(
                 padding: const EdgeInsets.all(2.0),
-                child: new Text(address,
+                child: new Text(acc.address,
                   style: new TextStyle(
                       fontSize: 14,
                       color: Colors.red

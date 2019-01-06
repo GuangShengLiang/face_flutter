@@ -64,21 +64,33 @@ class MineEditState extends State<MineEdit> {
           ),
           new Form(
               key: _formKey,
-              child: new Column(
-                children: <Widget>[
+              child: new Container(
+                child: new Column(
+                    children: <Widget>[
                   new TextFormField(
                     maxLength: 10,
-                    decoration: new InputDecoration(hintText: '昵称'),
+                    decoration: new InputDecoration(
+                        labelText: "昵称",
+                        labelStyle: new TextStyle(fontSize: 18)),
                     initialValue: acc.nickName,
                     onSaved: (val) {
                       acc.nickName = val;
                     },
                   ),
-                  new TextFormField(
-                    maxLength: 10,
-                    initialValue: _value,
-                    decoration: new InputDecoration(
-                      hintText: '生日',
+                  new Container(
+                    child:
+                    new Row(
+                      children: <Widget>[
+                        new TextFormField(
+                          maxLength: 10,
+                          initialValue: _value,
+                          decoration: new InputDecoration(
+                            hintText: '生日',
+                          ),
+                        ),
+//                        new IconButton(
+//                            icon: new Icon(Icons.date_range), onPressed: null)
+                      ],
                     ),
                   ),
                   new TextFormField(
@@ -87,6 +99,7 @@ class MineEditState extends State<MineEdit> {
                   ),
                 ],
               )),
+          )
         ],
       ),
     );

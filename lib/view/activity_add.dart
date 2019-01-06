@@ -39,6 +39,7 @@ class ActivityAddState extends State<ActivityAdd> {
             tooltip: 'save',
             onPressed: () {
               _formKey.currentState.save();
+              act.detail="test";
               new AccountClient().addActiviy(act);
             },
           ),
@@ -73,17 +74,6 @@ class ActivityAddState extends State<ActivityAdd> {
                     onSaved: (val){
                       act.address=val;
                     },
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new TextFormField(
-                        maxLength: 10,
-                        decoration: new InputDecoration(
-                          hintText: 'stime',
-                        ),
-                      ),
-                      new RaisedButton(onPressed: _selectDate, child: new Text('日期'),),
-                    ],
                   ),
                 ],
               )),

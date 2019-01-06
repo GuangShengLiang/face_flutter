@@ -18,6 +18,7 @@ class Activity{
   String aid;
   String title;
   String subTitle;
+  String detail;
   String address;
   String stime;
   String etime;

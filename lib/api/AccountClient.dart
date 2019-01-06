@@ -93,6 +93,7 @@ class AccountClient {
     await dio.post(activityUrl, data: {
       "title": act.title,
       "address": act.address,
+      "detail": act.detail,
       "stime": act.stime,
       "etime": act.etime,
     });
