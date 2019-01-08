@@ -37,25 +37,24 @@ class MineEditState extends State<MineEdit> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(
-        elevation: 0.0,
-        title: new Text('profile',
-            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-        actions: <Widget>[
-          new IconButton(
-            icon: const Icon(Icons.save),
-            tooltip: 'save',
-            onPressed: () {
-              _formKey.currentState.save();
-              new AccountClient().updateInfo(acc.nickName);
-              print("saved");
-            },
-          ),
-        ],
-      ),
-      body: new ListView(
-        children: [
+        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+        appBar: new AppBar(
+          elevation: 0.0,
+          title: new Text('profile',
+              style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+          actions: <Widget>[
+            new IconButton(
+              icon: const Icon(Icons.save),
+              tooltip: 'save',
+              onPressed: () {
+                _formKey.currentState.save();
+                new AccountClient().updateInfo(acc.nickName);
+                print("saved");
+              },
+            ),
+          ],
+        ),
+        body: new ListView(children: [
           new Image.asset(
             'assets/images/ic_main_tab_company_pre.png',
             width: 600.0,
@@ -64,44 +63,43 @@ class MineEditState extends State<MineEdit> {
           ),
           new Form(
               key: _formKey,
-              child: new Container(
-                child: new Column(
-                    children: <Widget>[
-                  new TextFormField(
-                    maxLength: 10,
-                    decoration: new InputDecoration(
-                        labelText: "昵称",
-                        labelStyle: new TextStyle(fontSize: 18)),
-                    initialValue: acc.nickName,
-                    onSaved: (val) {
-                      acc.nickName = val;
-                    },
-                  ),
-                  new Container(
-                    child:
-                    new Row(
-                      children: <Widget>[
-                        new TextFormField(
-                          maxLength: 10,
-                          initialValue: _value,
-                          decoration: new InputDecoration(
-                            hintText: '生日',
-                          ),
-                        ),
-//                        new IconButton(
-//                            icon: new Icon(Icons.date_range), onPressed: null)
-                      ],
+              child: new ListView(
+                children: <Widget>[
+                  new Row(children: <Widget>[
+                    new TextFormField(
+                      maxLength: 10,
+                      decoration: new InputDecoration(
+                          labelText: "昵称",
+                          labelStyle: new TextStyle(fontSize: 18)),
+                      initialValue: acc.nickName,
+                      onSaved: (val) {
+                        acc.nickName = val;
+                      },
                     ),
+                  ]),
+                  new Row(
+                    children: <Widget>[
+                      new TextFormField(
+                        maxLength: 10,
+                        initialValue: _value,
+                        decoration: new InputDecoration(
+                          hintText: '生日',
+                        ),
+                      ),
+                      new IconButton(
+                          icon: new Icon(Icons.date_range), onPressed: _selectDate)
+                    ],
                   ),
-                  new TextFormField(
-                    maxLength: 10,
-                    decoration: new InputDecoration(hintText: '职业'),
-                  ),
+                  new Row(
+                    children: <Widget>[
+                      new TextFormField(
+                        maxLength: 10,
+                        decoration: new InputDecoration(hintText: '职业'),
+                      ),
+                    ],
+                  )
                 ],
               )),
-          )
-        ],
-      ),
-    );
+        ]));
   }
 }
