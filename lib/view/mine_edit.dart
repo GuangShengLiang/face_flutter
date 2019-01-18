@@ -37,69 +37,60 @@ class MineEditState extends State<MineEdit> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-        appBar: new AppBar(
-          elevation: 0.0,
-          title: new Text('profile',
-              style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-          actions: <Widget>[
-            new IconButton(
-              icon: const Icon(Icons.save),
-              tooltip: 'save',
-              onPressed: () {
-                _formKey.currentState.save();
-                new AccountClient().updateInfo(acc.nickName);
-                print("saved");
+      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+      appBar: new AppBar(
+        elevation: 0.0,
+        title: new Text('profile',
+            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+        actions: <Widget>[
+          new IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: 'save',
+            onPressed: () {
+              _formKey.currentState.save();
+              new AccountClient().updateInfo(acc.nickName);
+              print("saved");
+            },
+          ),
+        ],
+      ),
+      body: new Form(
+        key: _formKey,
+        child: new ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          children: <Widget>[
+            new TextFormField(
+              decoration: const InputDecoration(
+                icon: const Icon(Icons.person),
+                hintText: 'Enter your nick name',
+                labelText: 'nick name',
+              ),
+              onSaved: (val) {
+                acc.nickName = val;
               },
+            ),
+            new TextFormField(
+              decoration: const InputDecoration(
+                icon: const Icon(Icons.calendar_today),
+                hintText: 'Enter your date of birth',
+                labelText: 'birthday',
+              ),
+              onSaved: (val) {
+                acc.birthday = val;
+              },
+              keyboardType: TextInputType.datetime,
+            ),
+            new TextFormField(
+              decoration: const InputDecoration(
+                icon: const Icon(Icons.email),
+                hintText: 'Enter a email address',
+                labelText: 'Email',
+              ),
+              keyboardType: TextInputType.emailAddress,
             ),
           ],
         ),
-        body: new ListView(children: [
-          new Image.asset(
-            'assets/images/ic_main_tab_company_pre.png',
-            width: 600.0,
-            height: 240.0,
-            fit: BoxFit.cover,
-          ),
-          new Form(
-              key: _formKey,
-              child: new ListView(
-                children: <Widget>[
-                  new Row(children: <Widget>[
-                    new TextFormField(
-                      maxLength: 10,
-                      decoration: new InputDecoration(
-                          labelText: "昵称",
-                          labelStyle: new TextStyle(fontSize: 18)),
-                      initialValue: acc.nickName,
-                      onSaved: (val) {
-                        acc.nickName = val;
-                      },
-                    ),
-                  ]),
-                  new Row(
-                    children: <Widget>[
-                      new TextFormField(
-                        maxLength: 10,
-                        initialValue: _value,
-                        decoration: new InputDecoration(
-                          hintText: '生日',
-                        ),
-                      ),
-                      new IconButton(
-                          icon: new Icon(Icons.date_range), onPressed: _selectDate)
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new TextFormField(
-                        maxLength: 10,
-                        decoration: new InputDecoration(hintText: '职业'),
-                      ),
-                    ],
-                  )
-                ],
-              )),
-        ]));
+      ),
+    );
   }
 }

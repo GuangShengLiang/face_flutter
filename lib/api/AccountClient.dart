@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 class AccountClient {
   final String baseUrl = "http://localhost:8080/api";
   final String infoUrl = "/account/info";
-  final String relationsUrl = "/account/relations";
+  final String relationsUrl = "/account/friends";
   final String activityUrl = "/activity/activity";
   final String activitiesUrl = "/activity/list";
   var dio;
@@ -50,7 +50,7 @@ class AccountClient {
 
   Future<List<Relation>> relations() async {
     Response response =
-        await dio.get(relationsUrl, data: {"uid": "1", "type": 1});
+        await dio.get(relationsUrl, data: {"uid": "1"});
     List<Relation> rst = new List();
     for (int i = 0; i < response.data.length; i++) {
       Relation a = new Relation();
