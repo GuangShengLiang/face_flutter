@@ -3,9 +3,10 @@ import 'package:face_flutter/model/Account.dart';
 import 'package:dio/dio.dart';
 
 class AccountClient {
-  final String baseUrl = "http://localhost:8080/api";
-  final String infoUrl = "/account/info";
-  final String relationsUrl = "/account/friends";
+//  final String baseUrl = "http://localhost:8080/api";
+  final String baseUrl = "http://39.104.140.133/api";
+  final String infoUrl = "/account/my_info";
+  final String friendsUrl = "/account/friends";
   final String activityUrl = "/activity/activity";
   final String activitiesUrl = "/activity/list";
   var dio;
@@ -22,7 +23,7 @@ class AccountClient {
 //      if(options.method=="POST"||options.method=="PUT"||options.method=="DELETE"){
 //
 //      }
-      options.headers["token"] = "a";
+      options.headers["token"] = "6589affbcb794b97a4ca477c458bbff9";
       return options;
     };
     dio.interceptor.response.onError = (DioError e) {
@@ -34,8 +35,8 @@ class AccountClient {
     };
   }
 
-  Future<Account> info() async {
-    Response response = await dio.get(infoUrl, data: {"uid": "1"});
+  Future<Account> myInfo() async {
+    Response response = await dio.get(infoUrl);
     Account a = new Account();
     a.nickName = response.data['nickName'];
     a.year = response.data['year'];
@@ -50,15 +51,15 @@ class AccountClient {
 
   Future<List<Relation>> relations() async {
     Response response =
-        await dio.get(relationsUrl, data: {"uid": "1"});
+        await dio.get(friendsUrl);
     List<Relation> rst = new List();
     for (int i = 0; i < response.data.length; i++) {
       Relation a = new Relation();
       a.id = response.data[i]['id'];
       a.uid = response.data[i]['uid'];
-      a.rid = response.data[i]['rid'];
+      a.rid = response.data[i]['fid'];
       a.type = response.data[i]['type'];
-      a.rname = response.data[i]['rname'];
+      a.rname = response.data[i]['fname'];
       rst.add(a);
     }
     return rst;

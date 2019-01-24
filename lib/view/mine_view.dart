@@ -14,7 +14,7 @@ class _MineTabWidgetState extends State<MineTab> {
   @override
   void initState() {
     super.initState();
-    new AccountClient().info().then((account) {
+    new AccountClient().myInfo().then((account) {
       setState(() {
         acc = account;
       });
