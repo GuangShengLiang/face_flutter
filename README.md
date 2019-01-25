@@ -1,9 +1,4 @@
 # face_flutter
+现在还有很多页面需要开发，欢迎对这个项目感兴趣的朋友，请联系我，一同开发
+主要功能：召集朋友参加活动
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
-# face_flutter
