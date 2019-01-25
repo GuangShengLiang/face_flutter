@@ -1,10 +1,12 @@
 import 'dart:io';
-import 'package:face_flutter/model/Account.dart';
+import 'package:face_flutter/model/account.dart';
+import 'package:face_flutter/api/constant.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountClient {
-//  final String baseUrl = "http://localhost:8080/api";
-  final String baseUrl = "http://39.104.140.133/api";
+  final String baseUrl = "http://localhost:8080/api";
+//  final String baseUrl = "http://39.104.140.133/api";
   final String infoUrl = "/account/my_info";
   final String friendsUrl = "/account/friends";
   final String activityUrl = "/activity/activity";
@@ -23,7 +25,10 @@ class AccountClient {
 //      if(options.method=="POST"||options.method=="PUT"||options.method=="DELETE"){
 //
 //      }
-      options.headers["token"] = "6589affbcb794b97a4ca477c458bbff9";
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = await prefs.getString(constant.key_token);
+      options.headers["token"] = token;
+//      options.headers["token"] = "6589affbcb794b97a4ca477c458bbff9";
       return options;
     };
     dio.interceptor.response.onError = (DioError e) {

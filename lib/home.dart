@@ -1,7 +1,7 @@
 import 'package:face_flutter/component/icon_tab.dart';
 import 'package:face_flutter/view/activity.dart';
 import 'package:face_flutter/view/friend.dart';
-import 'package:face_flutter/view/messageTab.dart';
+import 'package:face_flutter/view/message_tab.dart';
 import 'package:face_flutter/view/mine_view.dart';
 import 'package:flutter/material.dart';
 

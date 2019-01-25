@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:face_flutter/home.dart';
+import 'package:face_flutter/view/login.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class SplashState extends State<SplashPage> {
     _t = new Timer(const Duration(milliseconds: 1500), () {
       try {
         Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-            builder: (BuildContext context) => new BossApp()), (
+            builder: (BuildContext context) => new loginPage()), (
             Route route) => route == null);
       } catch (e) {
 

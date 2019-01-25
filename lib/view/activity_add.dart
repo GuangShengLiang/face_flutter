@@ -1,5 +1,5 @@
-import 'package:face_flutter/api/AccountClient.dart';
-import 'package:face_flutter/model/Account.dart';
+import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
 
 class ActivityAdd extends StatefulWidget{
