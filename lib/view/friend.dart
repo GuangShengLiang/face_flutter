@@ -15,7 +15,6 @@ class _FriendTabWidgetState extends State<FriendTab> {
     new AccountClient().relations().then((rst) {
       setState(() {
         rs = rst;
-        print(rs);
       });
     });
   }
@@ -57,7 +56,7 @@ class _FriendTabWidgetState extends State<FriendTab> {
           Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new FriendDetail()),
+                builder: (context) => new FriendDetail(uid:rs[i].ruid)),
           );
         },
         child:  new Container(

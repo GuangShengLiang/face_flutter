@@ -1,10 +1,35 @@
-import 'package:face_flutter/view/mine_edit.dart';
+import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
 
-class FriendDetail extends StatelessWidget {
+
+class FriendDetail extends StatefulWidget {
+  final String uid;
+  FriendDetail({Key key, @required this.uid}) : super(key: key);
+  @override
+  _FriendDetailState createState() => new _FriendDetailState(uid:uid);
+}
+
+class _FriendDetailState extends State<FriendDetail> {
+  Account acc;
+  String uid;
+
+  _FriendDetailState({Key key, @required this.uid});
 
   @override
+  void initState() {
+    super.initState();
+    new AccountClient().info(uid).then((account) {
+      setState(() {
+        acc = account;
+      });
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    if (acc == null) {
+      return new Container();
+    }
     Widget titleSection = new Container(
         padding: const EdgeInsets.all(8.0),
         child: new Row(
@@ -12,7 +37,7 @@ class FriendDetail extends StatelessWidget {
             children: [
               new Container(
                 padding: const EdgeInsets.all(4.0),
-                child: new Text('Don',
+                child: new Text(acc.nickName,
                   style: new TextStyle(
                       fontSize: 12,
                       color: Colors.red
@@ -21,7 +46,7 @@ class FriendDetail extends StatelessWidget {
               ),
               new Container(
                 padding: const EdgeInsets.all(4.0),
-                child: new Text('89',
+                child: new Text(acc.year,
                   style: new TextStyle(
                     fontSize: 12,
                     color: Colors.orange,
@@ -31,7 +56,7 @@ class FriendDetail extends StatelessWidget {
               new Container(
                 padding: const EdgeInsets.all(4.0),
                 color: Colors.blue,
-                child: new Text('巨蟹座',
+                child: new Text(acc.constellation,
                   style: new TextStyle(
                     fontSize: 12,
                     color: Colors.white,
@@ -45,19 +70,8 @@ class FriendDetail extends StatelessWidget {
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
-        title: new Text('我的',
+        title: new Text(acc.nickName,
             style: new TextStyle(fontSize: 14.0, color: Colors.white)),
-        actions: <Widget>[
-          new IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(builder: (context) => new MineEdit()),
-              );
-            },
-          ),
-        ],
       ),
       body: new ListView(
         children: [

@@ -23,10 +23,15 @@ class Activity{
   String stime;
   String etime;
 }
+class Apply{
+  int id;
+  String aid;
+  int status;
+}
 class Relation{
   int id;
   String uid;
-  String rid;
+  String ruid;
   int type;
   String remark;
   String rname;

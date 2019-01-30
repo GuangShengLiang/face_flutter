@@ -19,7 +19,8 @@ class SplashState extends State<SplashPage> {
     _t = new Timer(const Duration(milliseconds: 1500), () {
       try {
         Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-            builder: (BuildContext context) => new loginPage()), (
+//            builder: (BuildContext context) => new loginPage()), (
+            builder: (BuildContext context) => new BossApp()), (
             Route route) => route == null);
       } catch (e) {
 
