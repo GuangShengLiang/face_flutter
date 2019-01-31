@@ -27,7 +27,7 @@ class MineEditState extends State<MineEdit> {
   @override
   void initState() {
     super.initState();
-    new AccountClient().myInfo().then((account) {
+    AccountClient().myInfo().then((account) {
       setState(() {
         acc = account;
       });

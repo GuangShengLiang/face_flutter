@@ -1,5 +1,6 @@
 import 'package:face_flutter/api/account_client.dart';
 import 'package:face_flutter/model/account.dart';
+import 'package:face_flutter/view/friend_add.dart';
 import 'package:face_flutter/view/friend_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class _FriendTabWidgetState extends State<FriendTab> {
   @override
   void initState() {
     super.initState();
-    new AccountClient().relations().then((rst) {
+    new AccountClient().friends().then((rst) {
       setState(() {
         rs = rst;
       });
@@ -35,10 +36,10 @@ class _FriendTabWidgetState extends State<FriendTab> {
             icon: const Icon(Icons.add),
             tooltip: 'Next choice',
             onPressed: () {
-//              Navigator.push(
-//                context,
-//                new MaterialPageRoute(builder: (context) => new MineEdit()),
-//              );
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => new FriendAdd()),
+              );
             },
           ),
         ],
@@ -56,7 +57,7 @@ class _FriendTabWidgetState extends State<FriendTab> {
           Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new FriendDetail(uid:rs[i].ruid)),
+                builder: (context) => new FriendDetail(ruid:rs[i].ruid)),
           );
         },
         child:  new Container(

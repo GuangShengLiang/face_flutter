@@ -30,7 +30,7 @@ class MessageDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new FriendDetail(uid:"")),
+                    builder: (context) => new FriendDetail(ruid:"")),
               );
             },
             child: new Container(

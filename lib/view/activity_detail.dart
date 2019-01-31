@@ -1,4 +1,4 @@
-import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,6 @@ class ActivityDetail extends StatefulWidget {
 }
 
 class _ActivityDetailState extends State<ActivityDetail> {
-  final AccountClient c = new AccountClient();
   bool _isButton1Disabled = true;
   String buttonText = "报名";
   final String aid;
@@ -19,12 +18,12 @@ class _ActivityDetailState extends State<ActivityDetail> {
   @override
   void initState() {
     super.initState();
-    c.activityInfo(aid).then((rst) {
+    ActivityClient.activityInfo(aid).then((rst) {
       setState(() {
         acc = rst;
       });
     });
-    c.activityApplyDetail(aid).then((rst) {
+    ActivityClient.activityApplyDetail(aid).then((rst) {
       setState(() {
         if (rst != null) {
           _isButton1Disabled = false;
@@ -111,7 +110,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
       return null;
     } else {
       return () {
-        c.activityApply(aid);
+        ActivityClient.activityApply(aid);
       };
     }
   }

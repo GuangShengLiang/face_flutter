@@ -1,4 +1,4 @@
-import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:face_flutter/view/activity_add.dart';
 import 'package:face_flutter/view/activity_detail.dart';
@@ -14,7 +14,7 @@ class _ActivityTabWidgetState extends State<ActivityTab> {
 
   @override
   void initState() {
-    new AccountClient().activities().then((rst) {
+    ActivityClient.activities().then((rst) {
       setState(() {
         acts = rst;
       });

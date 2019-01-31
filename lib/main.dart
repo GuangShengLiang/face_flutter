@@ -30,8 +30,8 @@ void main() {
   ));
 }
 Dio initDio(){
-//  final String baseURL = "http://localhost:8080/api";
-  final String baseURL = "http://39.104.140.133/api";
+  final String baseURL = "http://localhost:8080/api";
+//  final String baseURL = "http://39.104.140.133/api";
   Options options = new Options(
       baseUrl: baseURL,
       connectTimeout: 3000,
@@ -56,4 +56,5 @@ Dio initDio(){
     }
     return e;
   };
+  return dio;
 }

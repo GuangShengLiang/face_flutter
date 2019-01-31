@@ -1,27 +1,35 @@
 import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/api/constant.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
 
 
 class FriendDetail extends StatefulWidget {
-  final String uid;
-  FriendDetail({Key key, @required this.uid}) : super(key: key);
+  final String ruid;
+  FriendDetail({Key key, @required this.ruid}) : super(key: key);
   @override
-  _FriendDetailState createState() => new _FriendDetailState(uid:uid);
+  _FriendDetailState createState() => new _FriendDetailState(ruid:ruid);
 }
 
 class _FriendDetailState extends State<FriendDetail> {
   Account acc;
-  String uid;
+  Relation relation;
+  String ruid;
+  String buttonText = "添加到通讯录";
 
-  _FriendDetailState({Key key, @required this.uid});
+  _FriendDetailState({Key key, @required this.ruid});
 
   @override
   void initState() {
     super.initState();
-    new AccountClient().info(uid).then((account) {
+    AccountClient().info(ruid).then((rst) {
       setState(() {
-        acc = account;
+        acc = rst;
+      });
+    });
+    AccountClient().relation(ruid).then((rst) {
+      setState(() {
+        relation = rst;
       });
     });
   }
@@ -66,6 +74,21 @@ class _FriendDetailState extends State<FriendDetail> {
             ]
         )
     );
+    if (relation != null){
+      if (relation.type == constant.relation_type_black){
+        buttonText = "";
+      }else if(relation.type == constant.relation_type_friend){
+        buttonText = "";
+      }
+    }
+    Widget action = new Container(
+      child: new FlatButton(
+          child: new Text(
+            buttonText,
+          ),
+          onPressed: _getBtnClickListener(),
+      ),
+    );
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
@@ -82,8 +105,19 @@ class _FriendDetailState extends State<FriendDetail> {
             fit: BoxFit.cover,
           ),
           titleSection,
+          action,
         ],
       ),
     );
+  }
+
+  _getBtnClickListener() {
+    if (buttonText == "") {
+      return null;
+    } else {
+      return () {
+        AccountClient().friendRequest(ruid);
+      };
+    }
   }
 }

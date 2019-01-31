@@ -1,4 +1,5 @@
 import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class ActivityAddState extends State<ActivityAdd> {
             onPressed: () {
               _formKey.currentState.save();
               act.detail="test";
-              new AccountClient().activityAdd(act);
+              ActivityClient.activityAdd(act);
             },
           ),
         ],
