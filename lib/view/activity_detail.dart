@@ -10,25 +10,21 @@ class ActivityDetail extends StatefulWidget {
 }
 
 class _ActivityDetailState extends State<ActivityDetail> {
-  bool _isButton1Disabled = true;
-  String buttonText = "报名";
   final String aid;
   Activity acc;
+  Apply apply;
 
   @override
   void initState() {
     super.initState();
-    ActivityClient.activityInfo(aid).then((rst) {
+    ActivityClient.detail(aid).then((rst) {
       setState(() {
         acc = rst;
       });
     });
-    ActivityClient.activityApplyDetail(aid).then((rst) {
+    ActivityClient.applyDetail(aid).then((rst) {
       setState(() {
-        if (rst != null) {
-          _isButton1Disabled = false;
-          buttonText = "已报名";
-        }
+        apply = rst;
       });
     });
   }
@@ -79,39 +75,48 @@ class _ActivityDetailState extends State<ActivityDetail> {
             ),
           ),
         ]));
+    Widget button = new Container(
+      child: new RaisedButton(
+          child: new Text("已报名"),
+          onPressed: () {
+            ActivityClient.apply(aid);
+          }),
+    );
+    if (apply == null) {
+      button = new Container(
+        child: new RaisedButton(
+            child: new Text("报名"),
+            onPressed: () {
+              ActivityClient.apply(aid);
+            }),
+      );
+    }
+
+    List<Widget> list = new List();
+    list.add(new Image.asset(
+      'assets/images/ic_main_tab_company_pre.png',
+      width: 600.0,
+      height: 240.0,
+      fit: BoxFit.cover,
+    ));
+    list.add(title);
+    list.add(time);
+    list.add(person);
+    list.add(button);
+
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(),
-      floatingActionButton: new FlatButton(
-        child: new Text(
-          buttonText,
-        ),
-        color: Colors.blue,
-        onPressed: _getBtnClickListener,
-      ),
+//      floatingActionButton: new FlatButton(
+//        child: new Text(
+//          buttonText,
+//        ),
+//        color: Colors.red,
+//        onPressed: _getBtnClickListener,
+//      ),
       body: new ListView(
-        children: [
-          new Image.asset(
-            'assets/images/ic_main_tab_company_pre.png',
-            width: 600.0,
-            height: 240.0,
-            fit: BoxFit.cover,
-          ),
-          title,
-          time,
-          person,
-        ],
+        children: list,
       ),
     );
-  }
-
-  _getBtnClickListener() {
-    if (_isButton1Disabled) {
-      return null;
-    } else {
-      return () {
-        ActivityClient.activityApply(aid);
-      };
-    }
   }
 }

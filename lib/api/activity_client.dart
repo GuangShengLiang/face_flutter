@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 
 class ActivityClient {
   static final String activityURL = "/activity/activity";
-  static final String activitiesURL = "/activity/list";
-  static final String activityInviteURL = "/activity/invite";
-  static final String activityApplyURL = "/activity/apply";
+  static final String listURL = "/activity/list";
+  static final String inviteURL = "/activity/invite";
+  static final String applyURL = "/activity/apply";
   static var dio = global.dio;
 
-  static Future<List<Activity>> activities() async {
-    Response response = await dio.get(activitiesURL);
+  static Future<List<Activity>> list() async {
+    Response response = await dio.get(listURL);
     List<Activity> rst = new List();
     for (int i = 0; i < response.data.length; i++) {
       Activity a = new Activity();
@@ -24,7 +24,7 @@ class ActivityClient {
     return rst;
   }
 
-  static Future<Activity> activityInfo(String aid) async {
+  static Future<Activity> detail(String aid) async {
     Response response = await dio.get(activityURL, data: {"aid": aid});
     Activity a = new Activity();
     a.title = response.data['title'];
@@ -34,7 +34,7 @@ class ActivityClient {
     return a;
   }
 
-  static Future<void> activityAdd(Activity act) async {
+  static Future<void> add(Activity act) async {
     await dio.post(activityURL, data: {
       "title": act.title,
       "address": act.address,
@@ -44,17 +44,17 @@ class ActivityClient {
     });
   }
 
-  static Future<void> activityApply(String aid) async {
-    await dio.post(activityApplyURL, data: {
+  static Future<void> apply(String aid) async {
+    await dio.post(applyURL, data: {
       "aid": aid,
     });
   }
 
-  static Future<Apply> activityApplyDetail(String aid) async {
-    Response response = await dio.get(activityApplyURL, data: {
+  static Future<Apply> applyDetail(String aid) async {
+    Response response = await dio.get(applyURL, data: {
       "aid": aid,
     });
-    if (response.data == null) {
+    if (response.data == null || response.data == "") {
       return null;
     }
     Apply a = new Apply();
@@ -64,8 +64,8 @@ class ActivityClient {
     return a;
   }
 
-  static Future<void> activityInvite(String aid, String iuid) async {
-    await dio.post(activityInviteURL, data: {
+  static Future<void> invite(String aid, String iuid) async {
+    await dio.post(inviteURL, data: {
       "aid": aid,
       "iuid": iuid,
     });

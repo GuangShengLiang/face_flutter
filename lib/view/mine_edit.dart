@@ -27,7 +27,7 @@ class MineEditState extends State<MineEdit> {
   @override
   void initState() {
     super.initState();
-    AccountClient().myInfo().then((account) {
+    AccountClient.myInfo().then((account) {
       setState(() {
         acc = account;
       });
@@ -48,7 +48,7 @@ class MineEditState extends State<MineEdit> {
             tooltip: 'save',
             onPressed: () {
               _formKey.currentState.save();
-              new AccountClient().updateInfo(acc.nickName);
+              AccountClient.updateInfo(acc.nickName);
               print("saved");
             },
           ),

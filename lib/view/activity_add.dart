@@ -41,7 +41,7 @@ class ActivityAddState extends State<ActivityAdd> {
             onPressed: () {
               _formKey.currentState.save();
               act.detail="test";
-              ActivityClient.activityAdd(act);
+              ActivityClient.add(act);
             },
           ),
         ],

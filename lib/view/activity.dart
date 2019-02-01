@@ -14,7 +14,7 @@ class _ActivityTabWidgetState extends State<ActivityTab> {
 
   @override
   void initState() {
-    ActivityClient.activities().then((rst) {
+    ActivityClient.list().then((rst) {
       setState(() {
         acts = rst;
       });
