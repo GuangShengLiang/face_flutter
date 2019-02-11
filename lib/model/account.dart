@@ -27,6 +27,8 @@ class Apply{
   int id;
   String aid;
   int status;
+  String title;
+  String statusName;
 }
 class Relation{
   int id;

@@ -6,7 +6,10 @@ class ActivityClient {
   static final String activityURL = "/activity/activity";
   static final String listURL = "/activity/list";
   static final String inviteURL = "/activity/invite";
+  static final String inviteListURL = "/activity/invite/list";
   static final String applyURL = "/activity/apply";
+  static final String applyListURL = "/activity/apply/list";
+  static final String applyApprovalListURL = "/activity/apply/approval/list";
   static var dio = global.dio;
 
   static Future<List<Activity>> list() async {
@@ -69,5 +72,24 @@ class ActivityClient {
       "aid": aid,
       "iuid": iuid,
     });
+  }
+
+  static Future<List<Apply>> applyList() async {
+  Response response = await dio.get(applyListURL);
+  List<Apply> rst = new List();
+  for (int i = 0; i < response.data.length; i++) {
+  Apply a = new Apply();
+  a.id = response.data[i]['id'];
+  a.aid = response.data[i]['aid'];
+  a.status = response.data[i]['status'];
+  a.statusName = response.data[i]['statusName'];
+  a.title = response.data[i]['title'];
+  rst.add(a);
+  }
+  return rst;
+  }
+
+  static Future<void> inviteList() async {
+    await dio.get(inviteURL, data: {});
   }
 }

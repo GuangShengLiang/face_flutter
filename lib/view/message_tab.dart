@@ -1,54 +1,67 @@
-import 'package:face_flutter/view/friend_detail.dart';
-import 'package:face_flutter/view/message_detail.dart';
+import 'package:face_flutter/api/activity_client.dart';
+import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
+class MessageTab extends StatefulWidget {
+  @override
+  MessageTabState createState() {
+    return MessageTabState();
+  }
+}
 
-class MessageTab extends StatelessWidget {
+class MessageTabState extends State<MessageTab> {
+  List<Apply> applyList;
+  @override
+  void initState() {
+    super.initState();
+    ActivityClient.applyList().then((rst) {
+      setState(() {
+        applyList = rst;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(
-        elevation: 0.0,
-        title: new Text('玩伴',
-            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-        actions: <Widget>[
-          new IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Next choice',
-            onPressed: () {
-//              Navigator.push(
-//                context,
-//                new MaterialPageRoute(builder: (context) => new MineEdit()),
-//              );
-            },
+    List<Widget> list = new List<Widget>();
+    if(applyList != null){
+      for (var i = 0; i < applyList.length; i++) {
+        list.add(
+          new ListTile(
+            title: new Text(applyList[i].title,
+                style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
+            subtitle: new Text(applyList[i].statusName),
           ),
-        ],
-      ),
-      body: new ListView(
-        children: [
-          new GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new MessageDetail()),
-              );
-            },
-            child: new Container(
-              child: new ListTile(
-                title: new Text("张三邀请你吃饭"),
-                leading: new Image.asset(
-                  "assets/images/a001.jpg",
-                  width: 35.0,
-                  height: 35.0,
-                ),
-              ),
-              height: 50.0,
-              color: Colors.white,
+        );
+        list.add(new Divider());
+      }
+    }
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "申请列表",),
+                Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.directions_bike)),
+                Tab(icon: Icon(Icons.directions_bike)),
+              ],
             ),
+            title: Text('Tabs Demo'),
           ),
-        ],
+          body: TabBarView(
+            children: [
+              new ListView(
+                children: list,
+              ),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_bike),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
