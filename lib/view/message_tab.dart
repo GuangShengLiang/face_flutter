@@ -1,6 +1,7 @@
 import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:flutter/material.dart';
+
 class MessageTab extends StatefulWidget {
   @override
   MessageTabState createState() {
@@ -10,6 +11,9 @@ class MessageTab extends StatefulWidget {
 
 class MessageTabState extends State<MessageTab> {
   List<Apply> applyList;
+  List<Apply> approvalList;
+  List<Activity> myPublish;
+
   @override
   void initState() {
     super.initState();
@@ -18,20 +22,87 @@ class MessageTabState extends State<MessageTab> {
         applyList = rst;
       });
     });
+    ActivityClient.myPublish().then((rst) {
+      setState(() {
+        myPublish = rst;
+      });
+    });
+    ActivityClient.applyApprovalList().then((rst) {
+      setState(() {
+        approvalList = rst;
+      });
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> list = new List<Widget>();
-    if(applyList != null){
+    if (applyList != null) {
       for (var i = 0; i < applyList.length; i++) {
         list.add(
           new ListTile(
             title: new Text(applyList[i].title,
-                style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
+                style:
+                    new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
             subtitle: new Text(applyList[i].statusName),
           ),
         );
         list.add(new Divider());
+      }
+    }
+    List<Widget> plist = new List<Widget>();
+    if (myPublish != null) {
+      for (var i = 0; i < myPublish.length; i++) {
+        plist.add(
+          new ListTile(
+            title: new Text(myPublish[i].title,
+                style:
+                    new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
+            subtitle: new Text(myPublish[i].address),
+          ),
+        );
+        plist.add(new Divider());
+      }
+    }
+    List<Widget> alist = new List<Widget>();
+    if (approvalList != null) {
+      for (var i = 0; i < approvalList.length; i++) {
+        alist.add(
+          new Container(
+            child: new Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 6,
+                  child: new Column(
+                    children: <Widget>[
+                      new Text(approvalList[i].title),
+                      new Text(approvalList[i].statusName)
+                    ],
+                  ),
+                ),
+                Expanded(
+                    flex: 4,
+                    child: new Column(
+                      children: <Widget>[
+                        new FlatButton(
+                          child: Text("同意"),
+                          onPressed: () {
+                            ActivityClient.applyAgree(approvalList[i].id);
+                          },
+                        ),
+                        new FlatButton(
+                          child: Text("拒绝"),
+                          onPressed: () {
+                            ActivityClient.applyReject(approvalList[i].id);
+                          },
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          ),
+        );
+        alist.add(new Divider());
       }
     }
     return MaterialApp(
@@ -41,9 +112,13 @@ class MessageTabState extends State<MessageTab> {
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
-                Tab(text: "申请列表",),
-                Tab(icon: Icon(Icons.directions_transit)),
-                Tab(icon: Icon(Icons.directions_bike)),
+                Tab(
+                  text: "我的申请",
+                ),
+                Tab(
+                  text: "我的发布",
+                ),
+                Tab(text: "我的审批"),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
             ),
@@ -54,8 +129,12 @@ class MessageTabState extends State<MessageTab> {
               new ListView(
                 children: list,
               ),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_transit),
+              new ListView(
+                children: plist,
+              ),
+              new ListView(
+                children: alist,
+              ),
               Icon(Icons.directions_bike),
             ],
           ),
@@ -64,4 +143,3 @@ class MessageTabState extends State<MessageTab> {
     );
   }
 }
-

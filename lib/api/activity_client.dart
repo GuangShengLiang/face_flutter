@@ -5,15 +5,34 @@ import 'package:dio/dio.dart';
 class ActivityClient {
   static final String activityURL = "/activity/activity";
   static final String listURL = "/activity/list";
+  static final String myPublishListURL = "/activity/my_publish/list";
   static final String inviteURL = "/activity/invite";
   static final String inviteListURL = "/activity/invite/list";
   static final String applyURL = "/activity/apply";
   static final String applyListURL = "/activity/apply/list";
-  static final String applyApprovalListURL = "/activity/apply/approval/list";
+  static final String applyApprovalListURL = "/activity/apply/list/approval";
+  static final String applyCancelURL = "/activity/apply/cancle";
+  static final String applyAgreeURL = "/activity/apply/agree";
+  static final String applyRejectURL = "/activity/apply/reject";
   static var dio = global.dio;
 
   static Future<List<Activity>> list() async {
     Response response = await dio.get(listURL);
+    List<Activity> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Activity a = new Activity();
+      a.aid = response.data[i]['aid'];
+      a.address = response.data[i]['address'];
+      a.title = response.data[i]['title'];
+      a.stime = response.data[i]['stime'];
+      a.etime = response.data[i]['etime'];
+      rst.add(a);
+    }
+    return rst;
+  }
+
+  static Future<List<Activity>> myPublish() async {
+    Response response = await dio.get(myPublishListURL);
     List<Activity> rst = new List();
     for (int i = 0; i < response.data.length; i++) {
       Activity a = new Activity();
@@ -52,6 +71,21 @@ class ActivityClient {
       "aid": aid,
     });
   }
+  static Future<void> applyCancle(int id) async {
+  await dio.put(applyCancelURL, data: {
+  "id": id,
+  });
+  }
+  static Future<void> applyAgree(int id) async {
+  await dio.put(applyAgreeURL, data: {
+  "id": id,
+  });
+  }
+  static Future<void> applyReject(int id) async {
+  await dio.put(applyRejectURL, data: {
+  "id": id,
+  });
+  }
 
   static Future<Apply> applyDetail(String aid) async {
     Response response = await dio.get(applyURL, data: {
@@ -75,18 +109,33 @@ class ActivityClient {
   }
 
   static Future<List<Apply>> applyList() async {
-  Response response = await dio.get(applyListURL);
-  List<Apply> rst = new List();
-  for (int i = 0; i < response.data.length; i++) {
-  Apply a = new Apply();
-  a.id = response.data[i]['id'];
-  a.aid = response.data[i]['aid'];
-  a.status = response.data[i]['status'];
-  a.statusName = response.data[i]['statusName'];
-  a.title = response.data[i]['title'];
-  rst.add(a);
+    Response response = await dio.get(applyListURL);
+    List<Apply> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Apply a = new Apply();
+      a.id = response.data[i]['id'];
+      a.aid = response.data[i]['aid'];
+      a.status = response.data[i]['status'];
+      a.statusName = response.data[i]['statusName'];
+      a.title = response.data[i]['title'];
+      rst.add(a);
+    }
+    return rst;
   }
-  return rst;
+
+  static Future<List<Apply>> applyApprovalList() async {
+    Response response = await dio.get(applyApprovalListURL);
+    List<Apply> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Apply a = new Apply();
+      a.id = response.data[i]['id'];
+      a.aid = response.data[i]['aid'];
+      a.status = response.data[i]['status'];
+      a.statusName = response.data[i]['statusName'];
+      a.title = response.data[i]['title'];
+      rst.add(a);
+    }
+    return rst;
   }
 
   static Future<void> inviteList() async {
