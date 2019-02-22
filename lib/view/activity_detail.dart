@@ -1,5 +1,6 @@
 import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
+import 'package:face_flutter/view/friend_detail.dart';
 import 'package:flutter/material.dart';
 
 class ActivityDetail extends StatefulWidget {
@@ -13,6 +14,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
   final String aid;
   Activity acc;
   Apply apply;
+  List<Account> rs;
 
   @override
   void initState() {
@@ -27,21 +29,42 @@ class _ActivityDetailState extends State<ActivityDetail> {
         apply = rst;
       });
     });
+    ActivityClient.member(aid).then((rst) {
+      setState(() {
+        rs = rst;
+      });
+    });
   }
 
-  String period = '2018-11-10 10:00--2018-11-10 13:00';
-  String partner = "张三，李四";
+  String period = '11-10 10:00--13:00';
 
   _ActivityDetailState({Key key, @required this.aid});
 
   @override
   Widget build(BuildContext context) {
-    if (acc == null) {
+    if (acc == null || rs == null) {
       return new Container();
     }
-    Widget title = new Container(
+    Widget cost = new Container(
         padding: const EdgeInsets.all(8.0),
         child: new Row(children: [
+          new Container(
+            child: new Icon(Icons.attach_money),
+          ),
+          new Container(
+            padding: const EdgeInsets.all(2.0),
+            child: new Text(
+              "AA制",
+              style: new TextStyle(fontSize: 14, color: Colors.red),
+            ),
+          ),
+        ]));
+    Widget address = new Container(
+        padding: const EdgeInsets.all(8.0),
+        child: new Row(children: [
+          new Container(
+            child: new Icon(Icons.location_on),
+          ),
           new Container(
             padding: const EdgeInsets.all(2.0),
             child: new Text(
@@ -54,6 +77,9 @@ class _ActivityDetailState extends State<ActivityDetail> {
         padding: const EdgeInsets.all(8.0),
         child: new Row(children: [
           new Container(
+            child: new Icon(Icons.av_timer),
+          ),
+          new Container(
             padding: const EdgeInsets.all(2.0),
             color: Colors.orange,
             child: new Text(
@@ -64,20 +90,11 @@ class _ActivityDetailState extends State<ActivityDetail> {
             ),
           ),
         ]));
-    Widget person = new Container(
-        padding: const EdgeInsets.all(8.0),
-        child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          new Container(
-            padding: const EdgeInsets.all(2.0),
-            child: new Text(
-              partner,
-              style: new TextStyle(fontSize: 14, color: Colors.red),
-            ),
-          ),
-        ]));
+
     Widget button = new Container(
       child: new RaisedButton(
           child: new Text("已报名"),
+          color: Colors.blueGrey,
           onPressed: () {
             ActivityClient.apply(aid);
           }),
@@ -86,6 +103,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
       button = new Container(
         child: new RaisedButton(
             child: new Text("报名"),
+            color: Colors.lightGreen,
             onPressed: () {
               ActivityClient.apply(aid);
             }),
@@ -99,10 +117,36 @@ class _ActivityDetailState extends State<ActivityDetail> {
       height: 240.0,
       fit: BoxFit.cover,
     ));
-    list.add(title);
+    list.add(cost);
+    list.add(address);
     list.add(time);
-    list.add(person);
-    list.add(button);
+    if (rs != null) {
+      List<Widget> rls = new List<Widget>();
+      for (var i = 0; i < rs.length; i++) {
+        rls.add(new GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new FriendDetail(ruid: rs[i].uid)),
+              );
+            },
+            child: Container(
+                child: Column(children: <Widget>[
+              Image.asset(
+                "assets/images/a002.jpg",
+                width: 50.0,
+                height: 50.0,
+              ),
+              new Text(rs[i].nickName)
+            ]))));
+      }
+      list.add(Wrap(
+        spacing: 8.0, // gap between adjacent chips
+        runSpacing: 4.0,
+        children: rls,
+      ));
+    }
 
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
@@ -117,6 +161,55 @@ class _ActivityDetailState extends State<ActivityDetail> {
       body: new ListView(
         children: list,
       ),
+      bottomNavigationBar: new BottomAppBar(
+        child: new Container(
+          child: new Row(
+            children: <Widget>[
+              Expanded(
+                  flex: 1,
+                  child: new Container(
+                    child: new IconButton(
+                        onPressed: () {}, icon: Icon(Icons.share)),
+                  )),
+              Expanded(
+                flex: 3,
+                child: button,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+}
+
+class TestFlowDelegate extends FlowDelegate {
+  EdgeInsets margin = EdgeInsets.zero;
+
+  TestFlowDelegate({this.margin});
+  @override
+  void paintChildren(FlowPaintingContext context) {
+    var x = margin.left;
+    var y = margin.top;
+    for (int i = 0; i < context.childCount; i++) {
+      var w = context.getChildSize(i).width + x + margin.right;
+      if (w < context.size.width) {
+        context.paintChild(i,
+            transform: new Matrix4.translationValues(x, y, 0.0));
+        x = w + margin.left;
+      } else {
+        x = margin.left;
+        y += context.getChildSize(i).height + margin.top + margin.bottom;
+        context.paintChild(i,
+            transform: new Matrix4.translationValues(x, y, 0.0));
+        x += context.getChildSize(i).width + margin.left + margin.right;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(FlowDelegate oldDelegate) {
+    // TODO: implement shouldRepaint
+    return oldDelegate != this;
   }
 }

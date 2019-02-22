@@ -8,6 +8,7 @@ class ActivityClient {
   static final String myPublishListURL = "/activity/my_publish/list";
   static final String inviteURL = "/activity/invite";
   static final String inviteListURL = "/activity/invite/list";
+  static final String memberURL = "/activity/activity/member";
   static final String applyURL = "/activity/apply";
   static final String applyListURL = "/activity/apply/list";
   static final String applyApprovalListURL = "/activity/apply/list/approval";
@@ -46,6 +47,19 @@ class ActivityClient {
     return rst;
   }
 
+  static Future<List<Account>> member(String aid) async {
+    Response response = await dio.get(memberURL, data: {"aid": aid});
+    List<Account> rst = new List();
+    for (int i = 0; i < response.data.length; i++) {
+      Account a = new Account();
+      a.uid = response.data[i]['uid'];
+      a.nickName = response.data[i]['nickName'];
+      a.avatarUrl = response.data[i]['avatarUrl'];
+      rst.add(a);
+    }
+    return rst;
+  }
+
   static Future<Activity> detail(String aid) async {
     Response response = await dio.get(activityURL, data: {"aid": aid});
     Activity a = new Activity();
@@ -71,20 +85,23 @@ class ActivityClient {
       "aid": aid,
     });
   }
+
   static Future<void> applyCancle(int id) async {
-  await dio.put(applyCancelURL, data: {
-  "id": id,
-  });
+    await dio.put(applyCancelURL, data: {
+      "id": id,
+    });
   }
+
   static Future<void> applyAgree(int id) async {
-  await dio.put(applyAgreeURL, data: {
-  "id": id,
-  });
+    await dio.put(applyAgreeURL, data: {
+      "id": id,
+    });
   }
+
   static Future<void> applyReject(int id) async {
-  await dio.put(applyRejectURL, data: {
-  "id": id,
-  });
+    await dio.put(applyRejectURL, data: {
+      "id": id,
+    });
   }
 
   static Future<Apply> applyDetail(String aid) async {
