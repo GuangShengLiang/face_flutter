@@ -13,6 +13,7 @@ class MessageTabState extends State<MessageTab> {
   List<Apply> applyList;
   List<Apply> approvalList;
   List<Activity> myPublish;
+  List<Invite> inviteList;
 
   @override
   void initState() {
@@ -32,6 +33,11 @@ class MessageTabState extends State<MessageTab> {
         approvalList = rst;
       });
     });
+    ActivityClient.invitedList().then((rst) {
+      setState(() {
+        inviteList = rst;
+      });
+    });
   }
 
   @override
@@ -48,6 +54,20 @@ class MessageTabState extends State<MessageTab> {
           ),
         );
         list.add(new Divider());
+      }
+    }
+    List<Widget> ilist = new List<Widget>();
+    if ( inviteList!= null) {
+      for (var i = 0; i < ilist.length; i++) {
+        list.add(
+          new ListTile(
+            title: new Text(inviteList[i].title,
+                style:
+                new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
+            subtitle: new Text(inviteList[i].statusName),
+          ),
+        );
+        ilist.add(new Divider());
       }
     }
     List<Widget> plist = new List<Widget>();
@@ -112,6 +132,7 @@ class MessageTabState extends State<MessageTab> {
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
+                Tab(text:"我收到的邀请"),
                 Tab(
                   text: "我的申请",
                 ),
@@ -119,13 +140,15 @@ class MessageTabState extends State<MessageTab> {
                   text: "我的发布",
                 ),
                 Tab(text: "我的审批"),
-                Tab(icon: Icon(Icons.directions_bike)),
               ],
             ),
             title: Text('Tabs Demo'),
           ),
           body: TabBarView(
             children: [
+              new ListView(
+                children: ilist,
+              ),
               new ListView(
                 children: list,
               ),
@@ -135,7 +158,6 @@ class MessageTabState extends State<MessageTab> {
               new ListView(
                 children: alist,
               ),
-              Icon(Icons.directions_bike),
             ],
           ),
         ),

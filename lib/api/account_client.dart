@@ -14,22 +14,22 @@ class AccountClient {
  static var dio = global.dio;
 
   static Future<Account> myInfo() async {
-    Response response = await dio.get(myInfoURL);
+    Response p = await dio.get(myInfoURL);
     Account a = new Account();
-    a.nickName = response.data['nickName'];
-    a.year = response.data['year'];
-    a.constellation = response.data['constellation'];
+    a.nickName = p.data['nickName'];
+    a.year = p.data['year'];
+    a.constellation = p.data['constellation'];
     return a;
   }
 
   static Future<Account> info(String uid) async {
-    Response response = await dio.get(infoURL, data: {
+    Response p = await dio.get(infoURL, data: {
       "uid": uid,
     });
     Account a = new Account();
-    a.nickName = response.data['nickName'];
-    a.year = response.data['year'];
-    a.constellation = response.data['constellation'];
+    a.nickName = p.data['nickName'];
+    a.year = p.data['year'];
+    a.constellation = p.data['constellation'];
     return a;
   }
 
@@ -68,14 +68,14 @@ class AccountClient {
   }
 
   static Future<List<Relation>> friendRequestList() async {
-    Response response = await dio.get(friendRequestListURL);
+    Response p = await dio.get(friendRequestListURL);
     List<Relation> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Relation a = new Relation();
-      a.id = response.data[i]['id'];
-      a.uid = response.data[i]['uid'];
-      a.ruid = response.data[i]['ruid'];
-      a.rname = response.data[i]['rname'];
+      a.id = p.data[i]['id'];
+      a.uid = p.data[i]['uid'];
+      a.ruid = p.data[i]['ruid'];
+      a.rname = p.data[i]['rname'];
       rst.add(a);
     }
     return rst;
@@ -86,15 +86,15 @@ class AccountClient {
   }
 
   static Future<List<Relation>> friends() async {
-    Response response = await dio.get(friendsURL);
+    Response p = await dio.get(friendsURL);
     List<Relation> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Relation a = new Relation();
-      a.id = response.data[i]['id'];
-      a.uid = response.data[i]['uid'];
-      a.ruid = response.data[i]['ruid'];
-      a.type = response.data[i]['type'];
-      a.rname = response.data[i]['rname'];
+      a.id = p.data[i]['id'];
+      a.uid = p.data[i]['uid'];
+      a.ruid = p.data[i]['ruid'];
+      a.type = p.data[i]['type'];
+      a.rname = p.data[i]['rname'];
       rst.add(a);
     }
     return rst;

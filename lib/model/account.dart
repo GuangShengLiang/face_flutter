@@ -30,6 +30,15 @@ class Apply{
   String title;
   String statusName;
 }
+class Invite{
+  int id;
+  String aid;
+  String iuid;
+  String iname;
+  int status;
+  String title;
+  String statusName;
+}
 class Relation{
   int id;
   String uid;

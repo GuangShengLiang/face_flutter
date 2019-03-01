@@ -7,7 +7,7 @@ class ActivityClient {
   static final String listURL = "/activity/list";
   static final String myPublishListURL = "/activity/my_publish/list";
   static final String inviteURL = "/activity/invite";
-  static final String inviteListURL = "/activity/invite/list";
+  static final String invitedListURL = "/activity/invited/list";
   static final String memberURL = "/activity/activity/member";
   static final String applyURL = "/activity/apply";
   static final String applyListURL = "/activity/apply/list";
@@ -18,55 +18,55 @@ class ActivityClient {
   static var dio = global.dio;
 
   static Future<List<Activity>> list() async {
-    Response response = await dio.get(listURL);
+    Response p = await dio.get(listURL);
     List<Activity> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Activity a = new Activity();
-      a.aid = response.data[i]['aid'];
-      a.address = response.data[i]['address'];
-      a.title = response.data[i]['title'];
-      a.stime = response.data[i]['stime'];
-      a.etime = response.data[i]['etime'];
+      a.aid = p.data[i]['aid'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.stime = p.data[i]['stime'];
+      a.etime = p.data[i]['etime'];
       rst.add(a);
     }
     return rst;
   }
 
   static Future<List<Activity>> myPublish() async {
-    Response response = await dio.get(myPublishListURL);
+    Response p = await dio.get(myPublishListURL);
     List<Activity> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Activity a = new Activity();
-      a.aid = response.data[i]['aid'];
-      a.address = response.data[i]['address'];
-      a.title = response.data[i]['title'];
-      a.stime = response.data[i]['stime'];
-      a.etime = response.data[i]['etime'];
+      a.aid = p.data[i]['aid'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.stime = p.data[i]['stime'];
+      a.etime = p.data[i]['etime'];
       rst.add(a);
     }
     return rst;
   }
 
   static Future<List<Account>> member(String aid) async {
-    Response response = await dio.get(memberURL, data: {"aid": aid});
+    Response p = await dio.get(memberURL, data: {"aid": aid});
     List<Account> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Account a = new Account();
-      a.uid = response.data[i]['uid'];
-      a.nickName = response.data[i]['nickName'];
-      a.avatarUrl = response.data[i]['avatarUrl'];
+      a.uid = p.data[i]['uid'];
+      a.nickName = p.data[i]['nickName'];
+      a.avatarUrl = p.data[i]['avatarUrl'];
       rst.add(a);
     }
     return rst;
   }
 
   static Future<Activity> detail(String aid) async {
-    Response response = await dio.get(activityURL, data: {"aid": aid});
+    Response p = await dio.get(activityURL, data: {"aid": aid});
     Activity a = new Activity();
-    a.title = response.data['title'];
-    a.stime = response.data['stime'];
-    a.etime = response.data['etime'];
-    a.address = response.data['address'];
+    a.title = p.data['title'];
+    a.stime = p.data['stime'];
+    a.etime = p.data['etime'];
+    a.address = p.data['address'];
     return a;
   }
 
@@ -105,16 +105,16 @@ class ActivityClient {
   }
 
   static Future<Apply> applyDetail(String aid) async {
-    Response response = await dio.get(applyURL, data: {
+    Response p = await dio.get(applyURL, data: {
       "aid": aid,
     });
-    if (response.data == null || response.data == "") {
+    if (p.data == null || p.data == "") {
       return null;
     }
     Apply a = new Apply();
-    a.id = response.data['id'];
-    a.aid = response.data['aid'];
-    a.status = response.data['status'];
+    a.id = p.data['id'];
+    a.aid = p.data['aid'];
+    a.status = p.data['status'];
     return a;
   }
 
@@ -126,36 +126,49 @@ class ActivityClient {
   }
 
   static Future<List<Apply>> applyList() async {
-    Response response = await dio.get(applyListURL);
+    Response p = await dio.get(applyListURL);
     List<Apply> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Apply a = new Apply();
-      a.id = response.data[i]['id'];
-      a.aid = response.data[i]['aid'];
-      a.status = response.data[i]['status'];
-      a.statusName = response.data[i]['statusName'];
-      a.title = response.data[i]['title'];
+      a.id = p.data[i]['id'];
+      a.aid = p.data[i]['aid'];
+      a.status = p.data[i]['status'];
+      a.statusName = p.data[i]['statusName'];
+      a.title = p.data[i]['title'];
       rst.add(a);
     }
     return rst;
   }
 
   static Future<List<Apply>> applyApprovalList() async {
-    Response response = await dio.get(applyApprovalListURL);
+    Response p = await dio.get(applyApprovalListURL);
     List<Apply> rst = new List();
-    for (int i = 0; i < response.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Apply a = new Apply();
-      a.id = response.data[i]['id'];
-      a.aid = response.data[i]['aid'];
-      a.status = response.data[i]['status'];
-      a.statusName = response.data[i]['statusName'];
-      a.title = response.data[i]['title'];
+      a.id = p.data[i]['id'];
+      a.aid = p.data[i]['aid'];
+      a.status = p.data[i]['status'];
+      a.statusName = p.data[i]['statusName'];
+      a.title = p.data[i]['title'];
       rst.add(a);
     }
     return rst;
   }
 
-  static Future<void> inviteList() async {
-    await dio.get(inviteURL, data: {});
+  static Future<List<Invite>> invitedList() async {
+    Response p = await dio.get(invitedListURL);
+    List<Invite> rst = new List();
+    for (int i = 0; i < p.data.length; i++) {
+      Invite a = new Invite();
+      a.id = p.data[i]['id'];
+      a.iuid = p.data[i]['iuid'];
+      a.iname = p.data[i]['iname'];
+      a.aid = p.data[i]['aid'];
+      a.status = p.data[i]['status'];
+      a.statusName = p.data[i]['statusName'];
+      a.title = p.data[i]['title'];
+      rst.add(a);
+    }
+    return rst;
   }
 }
