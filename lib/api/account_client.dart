@@ -3,15 +3,15 @@ import 'package:face_flutter/api/global.dart' as global;
 import 'package:dio/dio.dart';
 
 class AccountClient {
- static final String myInfoURL = "/account/my_info";
- static final String infoURL = "/account/info";
- static final String friendURL = "/account/friend";
- static final String friendsURL = "/account/friends";
- static final String friendRequestURL = "/account/friend_request";
- static final String friendRequestListURL = "/account/friend_request_list";
- static final String relationURL = "/account/relation";
- static final String searchURL = "/account/search_mobile";
- static var dio = global.dio;
+  static final String myInfoURL = "/account/my_info";
+  static final String infoURL = "/account/info";
+  static final String friendURL = "/account/friend";
+  static final String friendsURL = "/account/friends";
+  static final String friendRequestURL = "/account/friend_request";
+  static final String friendRequestListURL = "/account/friend_request_list";
+  static final String relationURL = "/account/relation";
+  static final String searchURL = "/account/search_mobile";
+  static var dio = global.dio;
 
   static Future<Account> myInfo() async {
     Response p = await dio.get(myInfoURL);

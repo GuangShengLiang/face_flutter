@@ -20,13 +20,15 @@ class ActivityClient {
   static Future<List<Activity>> list() async {
     Response p = await dio.get(listURL);
     List<Activity> rst = new List();
-    for (int i = 0; i < p.data.length; i++) {
+    for (int i = 0; i < p.data.data.length; i++) {
       Activity a = new Activity();
-      a.aid = p.data[i]['aid'];
-      a.address = p.data[i]['address'];
-      a.title = p.data[i]['title'];
-      a.stime = p.data[i]['stime'];
-      a.etime = p.data[i]['etime'];
+      a.aid = p.data.data[i]['aid'];
+      a.uid = p.data.data[i]['uid'];
+      a.uname = p.data.data[i]['uname'];
+      a.address = p.data.data[i]['address'];
+      a.title = p.data.data[i]['title'];
+      a.stime = p.data.data[i]['stime'];
+      a.etime = p.data.data[i]['etime'];
       rst.add(a);
     }
     return rst;

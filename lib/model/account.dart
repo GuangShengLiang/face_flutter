@@ -16,6 +16,8 @@ class Account {
 
 class Activity{
   String aid;
+  String uid;
+  String uname;
   String title;
   String subTitle;
   String detail;
