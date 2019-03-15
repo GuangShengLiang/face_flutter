@@ -20,8 +20,14 @@ class Activity{
   String uname;
   String title;
   String subTitle;
+  int pubType;
   String detail;
   String address;
+  String period;
+  double latitude;
+  double longitude;
+  String startTime;
+  String endTime;
   String stime;
   String etime;
 }

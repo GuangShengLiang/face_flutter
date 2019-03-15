@@ -1,18 +1,17 @@
 import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
+import 'package:face_flutter/view/activity_edit.dart';
 import 'package:face_flutter/view/friend_detail.dart';
 import 'package:flutter/material.dart';
 
-class ActivityDetail extends StatefulWidget {
+class MyPublishActivityDetail extends StatefulWidget {
   final String aid;
-
-  ActivityDetail({Key key, @required this.aid}) : super(key: key);
-
+  MyPublishActivityDetail({Key key, @required this.aid}) : super(key: key);
   @override
   _ActivityDetailState createState() => new _ActivityDetailState(aid: aid);
 }
 
-class _ActivityDetailState extends State<ActivityDetail> {
+class _ActivityDetailState extends State<MyPublishActivityDetail> {
   final String aid;
   Activity acc;
   Apply apply;
@@ -26,17 +25,14 @@ class _ActivityDetailState extends State<ActivityDetail> {
         acc = rst;
       });
     });
-    ActivityClient.applyDetail(aid).then((rst) {
-      setState(() {
-        apply = rst;
-      });
-    });
     ActivityClient.member(aid).then((rst) {
       setState(() {
         rs = rst;
       });
     });
   }
+
+  String period = '11-10 10:00--13:00';
 
   _ActivityDetailState({Key key, @required this.aid});
 
@@ -45,7 +41,6 @@ class _ActivityDetailState extends State<ActivityDetail> {
     if (acc == null || rs == null) {
       return new Container();
     }
-
     List<Widget> list = new List();
     list.add(new Image.asset(
       'assets/images/ic_main_tab_company_pre.png',
@@ -117,13 +112,13 @@ class _ActivityDetailState extends State<ActivityDetail> {
             },
             child: Container(
                 child: Column(children: <Widget>[
-                  Image.asset(
-                    "assets/images/a002.jpg",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                  new Text(rs[i].nickName)
-                ]))));
+              Image.asset(
+                "assets/images/a002.jpg",
+                width: 50.0,
+                height: 50.0,
+              ),
+              new Text(rs[i].nickName)
+            ]))));
       }
       list.add(Wrap(
         spacing: 8.0, // gap between adjacent chips
@@ -131,36 +126,22 @@ class _ActivityDetailState extends State<ActivityDetail> {
         children: rls,
       ));
     }
-    Widget button = new Container(
-      child: new RaisedButton(
-          child: new Text("已报名"),
-          color: Colors.blueGrey,
-          onPressed: () {
-            ActivityClient.apply(aid);
-          }),
-    );
-    if (apply == null) {
-      button = new Container(
-        child: new RaisedButton(
-            child: new Text("报名"),
-            color: Colors.lightGreen,
-            onPressed: () {
-              ActivityClient.apply(aid);
-            }),
-      );
-    }
-
 
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(),
-//      floatingActionButton: new FlatButton(
-//        child: new Text(
-//          buttonText,
-//        ),
-//        color: Colors.red,
-//        onPressed: _getBtnClickListener,
-//      ),
+      appBar: new AppBar(
+        actions: <Widget>[
+          new IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => new ActivityEdit(aid: aid,)),
+              );
+            },
+          ),
+        ],
+      ),
       body: new ListView(
         children: list,
       ),
@@ -174,10 +155,6 @@ class _ActivityDetailState extends State<ActivityDetail> {
                     child: new IconButton(
                         onPressed: () {}, icon: Icon(Icons.share)),
                   )),
-              Expanded(
-                flex: 3,
-                child: button,
-              ),
             ],
           ),
         ),
@@ -185,3 +162,4 @@ class _ActivityDetailState extends State<ActivityDetail> {
     );
   }
 }
+

@@ -11,21 +11,19 @@ class FriendTab extends StatefulWidget {
 
 class _FriendTabWidgetState extends State<FriendTab> {
   List<Relation> rs;
+
   @override
   void initState() {
-    super.initState();
     AccountClient.friends().then((rst) {
       setState(() {
         rs = rst;
       });
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (rs == null) {
-      return new Container();
-    }
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < rs.length; i++) {
       list.add(new GestureDetector(

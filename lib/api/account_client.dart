@@ -15,6 +15,7 @@ class AccountClient {
 
   static Future<Account> myInfo() async {
     Response p = await dio.get(myInfoURL);
+
     Account a = new Account();
     a.nickName = p.data['nickName'];
     a.year = p.data['year'];
@@ -26,6 +27,9 @@ class AccountClient {
     Response p = await dio.get(infoURL, data: {
       "uid": uid,
     });
+    if (p.data == null || p.data == "") {
+      return null;
+    }
     Account a = new Account();
     a.nickName = p.data['nickName'];
     a.year = p.data['year'];

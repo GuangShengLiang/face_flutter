@@ -6,8 +6,14 @@ class ActivityClient {
   static final String activityURL = "/activity/activity";
   static final String listURL = "/activity/list";
   static final String myPublishListURL = "/activity/my_publish/list";
+  static final String myListURL = "/activity/my/list";
+  static final String myPendingListURL = "/activity/pending/list";
+  static final String myParticipatedListURL = "/activity/participated/list";
   static final String inviteURL = "/activity/invite";
+  static final String inviteAgreeURL = "/activity/invite/agree";
+  static final String inviteRejectURL = "/activity/invite/reject";
   static final String invitedListURL = "/activity/invited/list";
+  static final String inviteListURL = "/activity/invite/list";
   static final String memberURL = "/activity/activity/member";
   static final String applyURL = "/activity/apply";
   static final String applyListURL = "/activity/apply/list";
@@ -18,17 +24,18 @@ class ActivityClient {
   static var dio = global.dio;
 
   static Future<List<Activity>> list() async {
-    Response p = await dio.get(listURL);
+    Response p = await dio.get(listURL, data: {"fromId": 0});
     List<Activity> rst = new List();
-    for (int i = 0; i < p.data.data.length; i++) {
+    for (int i = 0; i < p.data.length; i++) {
       Activity a = new Activity();
-      a.aid = p.data.data[i]['aid'];
-      a.uid = p.data.data[i]['uid'];
-      a.uname = p.data.data[i]['uname'];
-      a.address = p.data.data[i]['address'];
-      a.title = p.data.data[i]['title'];
-      a.stime = p.data.data[i]['stime'];
-      a.etime = p.data.data[i]['etime'];
+      a.aid = p.data[i]['aid'];
+      a.uid = p.data[i]['uid'];
+      a.uname = p.data[i]['uname'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.period = p.data[i]['period'];
+      a.startTime = p.data[i]['startTime'];
+      a.endTime = p.data[i]['endTime'];
       rst.add(a);
     }
     return rst;
@@ -42,8 +49,56 @@ class ActivityClient {
       a.aid = p.data[i]['aid'];
       a.address = p.data[i]['address'];
       a.title = p.data[i]['title'];
-      a.stime = p.data[i]['stime'];
-      a.etime = p.data[i]['etime'];
+      a.startTime = p.data[i]['startTime'];
+      a.endTime = p.data[i]['endTime'];
+      rst.add(a);
+    }
+    return rst;
+  }
+  static Future<List<Activity>> myParticipatedList() async {
+    Response p = await dio.get(myParticipatedListURL);
+    List<Activity> rst = new List();
+    for (int i = 0; i < p.data.length; i++) {
+      Activity a = new Activity();
+      a.aid = p.data[i]['aid'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.period = p.data[i]['period'];
+      a.uname = p.data[i]['uname'];
+      a.startTime = p.data[i]['startTime'];
+      a.endTime = p.data[i]['endTime'];
+      rst.add(a);
+    }
+    return rst;
+  }
+  static Future<List<Activity>> myList() async {
+    Response p = await dio.get(myListURL);
+    List<Activity> rst = new List();
+    for (int i = 0; i < p.data.length; i++) {
+      Activity a = new Activity();
+      a.aid = p.data[i]['aid'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.period = p.data[i]['period'];
+      a.uname = p.data[i]['uname'];
+      a.startTime = p.data[i]['startTime'];
+      a.endTime = p.data[i]['endTime'];
+      rst.add(a);
+    }
+    return rst;
+  }
+  static Future<List<Activity>> myPendingList() async {
+    Response p = await dio.get(myPendingListURL);
+    List<Activity> rst = new List();
+    for (int i = 0; i < p.data.length; i++) {
+      Activity a = new Activity();
+      a.aid = p.data[i]['aid'];
+      a.address = p.data[i]['address'];
+      a.title = p.data[i]['title'];
+      a.period = p.data[i]['period'];
+      a.uname = p.data[i]['uname'];
+      a.startTime = p.data[i]['startTime'];
+      a.endTime = p.data[i]['endTime'];
       rst.add(a);
     }
     return rst;
@@ -77,8 +132,19 @@ class ActivityClient {
       "title": act.title,
       "address": act.address,
       "detail": act.detail,
-      "stime": act.stime,
-      "etime": act.etime,
+      "startTime": act.startTime,
+      "endTime": act.endTime,
+    });
+  }
+
+  static Future<void> edit(Activity act) async {
+    await dio.put(activityURL, data: {
+      "aid": act.aid,
+      "title": act.title,
+      "address": act.address,
+      "detail": act.detail,
+      "startTime": act.startTime,
+      "endTime": act.endTime,
     });
   }
 
@@ -127,6 +193,18 @@ class ActivityClient {
     });
   }
 
+  static Future<void> inviteAgree(int id) async {
+    await dio.put(inviteAgreeURL, data: {
+      "id": id,
+    });
+  }
+
+  static Future<void> inviteReject(int id) async {
+    await dio.put(inviteRejectURL, data: {
+      "id": id,
+    });
+  }
+
   static Future<List<Apply>> applyList() async {
     Response p = await dio.get(applyListURL);
     List<Apply> rst = new List();
@@ -172,5 +250,21 @@ class ActivityClient {
       rst.add(a);
     }
     return rst;
+  }
+  static Future<List<Invite>> inviteList() async {
+  Response p = await dio.get(inviteListURL);
+  List<Invite> rst = new List();
+  for (int i = 0; i < p.data.length; i++) {
+  Invite a = new Invite();
+  a.id = p.data[i]['id'];
+  a.iuid = p.data[i]['iuid'];
+  a.iname = p.data[i]['iname'];
+  a.aid = p.data[i]['aid'];
+  a.status = p.data[i]['status'];
+  a.statusName = p.data[i]['statusName'];
+  a.title = p.data[i]['title'];
+  rst.add(a);
+  }
+  return rst;
   }
 }

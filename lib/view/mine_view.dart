@@ -1,7 +1,9 @@
 import 'package:face_flutter/api/account_client.dart';
+import 'package:face_flutter/common/config.dart';
 import 'package:face_flutter/model/account.dart';
-import 'package:face_flutter/view/friend_detail.dart';
+import 'package:face_flutter/view/activity_tab.dart';
 import 'package:face_flutter/view/mine_edit.dart';
+import 'package:face_flutter/view/my_publish_activity.dart';
 import 'package:flutter/material.dart';
 
 class MineTab extends StatefulWidget {
@@ -69,92 +71,34 @@ class _MineTabWidgetState extends State<MineTab> {
           ),
         ])));
     list.add(new Divider());
+
+    List<Widget> wl = new List();
+    Config.act_button_list.asMap().forEach((i, value) {
+      wl.add(new Expanded(
+          child: new GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new MyActivityTab(
+                            initialIndex: i,
+                          )),
+                );
+              },
+              child: new Container(
+                padding: const EdgeInsets.all(4.0),
+                child: new Text(
+                  value,
+                  style: new TextStyle(fontSize: 12, color: Colors.red),
+                ),
+              ))));
+    });
+
     //邀请列表
     list.add(new Container(
         padding: const EdgeInsets.all(8.0),
-        child: new Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          new Expanded(
-              child: new GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new FriendDetail(ruid: "")),
-                    );
-                  },
-                  child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Text(
-                      "待参加",
-                      style: new TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ))),
-          new Expanded(
-              child: new GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new FriendDetail(ruid: "")),
-                    );
-                  },
-                  child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Text(
-                      "待审核",
-                      style: new TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ))),
-          new Expanded(
-              child: new GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new FriendDetail(ruid: "")),
-                    );
-                  },
-                  child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Text(
-                      "我的邀请",
-                      style: new TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ))),
-          new Expanded(
-              child: new GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new FriendDetail(ruid: "")),
-                    );
-                  },
-                  child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Text(
-                      "发出的邀请",
-                      style: new TextStyle(fontSize: 12, color: Colors.red),
-                    ),
-                  ))),
-          new Expanded(
-              child: new GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new FriendDetail(ruid: "")),
-              );
-            },
-            child: new Container(
-              padding: const EdgeInsets.all(4.0),
-              child: new Text(
-                "待参加",
-                style: new TextStyle(fontSize: 12, color: Colors.red),
-              ),
-            ),
-          )),
-        ])));
+        child: new Row(
+            crossAxisAlignment: CrossAxisAlignment.start, children: wl)));
     list.add(new Divider());
     //我的发布
     list.add(new GestureDetector(
@@ -162,7 +106,7 @@ class _MineTabWidgetState extends State<MineTab> {
           Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => new FriendDetail(ruid: "")),
+                builder: (context) => new MyPublishActivity()),
           );
         },
         child: new Container(
@@ -170,11 +114,6 @@ class _MineTabWidgetState extends State<MineTab> {
             child: new Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  new Expanded(
-                      child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Icon(Icons.send),
-                  )),
                   new Expanded(
                       flex: 8,
                       child: new Container(
@@ -184,11 +123,6 @@ class _MineTabWidgetState extends State<MineTab> {
                           style: new TextStyle(fontSize: 12, color: Colors.red),
                         ),
                       )),
-                  new Expanded(
-                      child: new Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: new Icon(Icons.arrow_forward),
-                  )),
                 ]))));
     list.add(new Divider());
 

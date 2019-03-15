@@ -93,19 +93,18 @@ class _ActivityTabWidgetState extends State<ActivityTab> {
                       ),
                     )),
                     new Expanded(
-                        flex: 2,
-                        child: new Container(
-                          padding: const EdgeInsets.all(4.0),
-                          child: new Text(
-                            'Kandersteg, Switzerland' + i.toString(),
-                            style: new TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        )),
-                    new Expanded(
                       child: new Row(
                         children: <Widget>[
+                          new Expanded(
+                            child: new Container(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: new Text(a.period,
+                                    textAlign: TextAlign.left,
+                                    style: new TextStyle(
+                                      color: Colors.grey,
+                                    ))),
+                            flex: 2,
+                          ),
                           new Expanded(
                             child: new Container(
                                 padding: const EdgeInsets.only(left: 8),
@@ -114,12 +113,11 @@ class _ActivityTabWidgetState extends State<ActivityTab> {
                                     style: new TextStyle(
                                       color: Colors.grey,
                                     ))),
-                            flex: 3,
                           ),
                           new Expanded(
                             child: new Align(
 //                                      alignment: Alignment.bottomRight,
-                              child: new Text("张三的局",
+                              child: new Text(a.uname,
                                   style: new TextStyle(
                                     color: Colors.grey,
                                   )),
