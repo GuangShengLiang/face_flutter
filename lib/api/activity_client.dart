@@ -186,7 +186,7 @@ class ActivityClient {
     return a;
   }
 
-  static Future<void> invite(String aid, String iuid) async {
+  static Future<void> invite(String aid, List<String> iuid) async {
     await dio.post(inviteURL, data: {
       "aid": aid,
       "iuid": iuid,

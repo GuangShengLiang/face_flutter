@@ -1,6 +1,7 @@
 import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:face_flutter/view/activity_edit.dart';
+import 'package:face_flutter/view/friend_choose.dart';
 import 'package:face_flutter/view/friend_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -99,8 +100,8 @@ class _ActivityDetailState extends State<MyPublishActivityDetail> {
         ])));
 
     //参与者
+    List<Widget> rls = new List<Widget>();
     if (rs != null) {
-      List<Widget> rls = new List<Widget>();
       for (var i = 0; i < rs.length; i++) {
         rls.add(new GestureDetector(
             onTap: () {
@@ -120,13 +121,24 @@ class _ActivityDetailState extends State<MyPublishActivityDetail> {
               new Text(rs[i].nickName)
             ]))));
       }
-      list.add(Wrap(
-        spacing: 8.0, // gap between adjacent chips
-        runSpacing: 4.0,
-        children: rls,
-      ));
     }
+    rls.add(new GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new FriendChooseTab(aid: aid),
+              ));
+        },
+        child: new Container(
+          child: Icon(Icons.add),
+        )));
 
+    list.add(Wrap(
+      spacing: 8.0, // gap between adjacent chips
+      runSpacing: 4.0,
+      children: rls,
+    ));
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
@@ -136,7 +148,10 @@ class _ActivityDetailState extends State<MyPublishActivityDetail> {
             onPressed: () {
               Navigator.push(
                 context,
-                new MaterialPageRoute(builder: (context) => new ActivityEdit(aid: aid,)),
+                new MaterialPageRoute(
+                    builder: (context) => new ActivityEdit(
+                          aid: aid,
+                        )),
               );
             },
           ),
@@ -162,4 +177,3 @@ class _ActivityDetailState extends State<MyPublishActivityDetail> {
     );
   }
 }
-

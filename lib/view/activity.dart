@@ -1,8 +1,10 @@
+import 'package:amap_location/amap_location.dart';
 import 'package:face_flutter/api/activity_client.dart';
 import 'package:face_flutter/model/account.dart';
 import 'package:face_flutter/view/activity_add.dart';
 import 'package:face_flutter/view/activity_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class ActivityTab extends StatefulWidget{
   @override
@@ -19,7 +21,19 @@ class _ActivityTabWidgetState extends State<ActivityTab> {
         acts = rst;
       });
     });
+    AMapLocationClient.startup(new AMapLocationOption( desiredAccuracy:CLLocationAccuracy.kCLLocationAccuracyHundredMeters  ));
+    AMapLocationClient.getLocation(true).then((r){
+      print(r.citycode);
+    });
+
+//    new Location().getLocation().then((r){
+//      print(r);
+//      print("test");
+//    });
+
+
     super.initState();
+
   }
 
   @override

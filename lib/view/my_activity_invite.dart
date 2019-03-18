@@ -25,6 +25,9 @@ class _ActivityTabWidgetState extends State<ActivityInviteTab> {
 
   @override
   Widget build(BuildContext context) {
+    if(rst ==null){
+      return new Container();
+    }
     List<Widget> list = new List<Widget>();
     if (rst != null) {
       for (var i = 0; i < rst.length; i++) {

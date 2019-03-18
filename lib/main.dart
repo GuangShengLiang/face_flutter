@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amap_location/amap_location.dart';
 import 'package:dio/dio.dart';
 import 'package:face_flutter/api/global.dart' as global;
 import 'package:face_flutter/api/constant.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  AMapLocationClient.setApiKey("1c521d4b30c1b38e736fb7399d7b8ba0");
   global.dio = initDio();
   runApp(new MaterialApp(
     title: "face",

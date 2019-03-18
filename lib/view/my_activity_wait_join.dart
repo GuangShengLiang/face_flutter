@@ -25,6 +25,9 @@ class _ActivityTabWidgetState extends State<ActivityWaitJoinTab> {
 
   @override
   Widget build(BuildContext context) {
+    if(acts ==null){
+      return new Container();
+    }
     List<Widget> list = new List<Widget>();
     if (acts != null) {
       for (var i = 0; i < acts.length; i++) {

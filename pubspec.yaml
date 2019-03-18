@@ -29,6 +29,8 @@ dependencies:
   json_annotation: ^2.0.0
   shared_preferences: ^0.4.0
   datetime_picker_formfield: ^0.1.8
+  amap_location: ^0.1.2
+  location: ^2.1.0
 
 dev_dependencies:
   flutter_test:

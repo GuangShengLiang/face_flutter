@@ -94,6 +94,7 @@ class _ActivityTabWidgetState extends State<MyPublishActivity> {
         height: 4,
       ));
     };
+
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
