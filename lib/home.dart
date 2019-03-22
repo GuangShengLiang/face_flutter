@@ -1,6 +1,9 @@
 import 'package:face_flutter/component/icon_tab.dart';
 import 'package:face_flutter/view/activity.dart';
+import 'package:face_flutter/view/chat.dart';
+import 'package:face_flutter/view/chat_screen.dart';
 import 'package:face_flutter/view/friend.dart';
+import 'package:face_flutter/view/main_screen.dart';
 import 'package:face_flutter/view/message_tab.dart';
 import 'package:face_flutter/view/mine_view.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +51,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new ActivityTab(), new MessageTab(), new FriendTab(), new MineTab()],
+          new ActivityTab(), new MainScreen(currentUserId:"1"), new FriendTab(), new MineTab()],
         controller: _controller,
       ),
       bottomNavigationBar: new Material(

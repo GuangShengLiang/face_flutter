@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amap_location/amap_location.dart';
 import 'package:dio/dio.dart';
 import 'package:face_flutter/api/global.dart' as global;
 import 'package:face_flutter/api/constant.dart';
@@ -8,9 +7,14 @@ import 'package:face_flutter/common/localStorage.dart';
 import 'package:face_flutter/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
+
 
 void main() {
-  AMapLocationClient.setApiKey("1c521d4b30c1b38e736fb7399d7b8ba0");
+//  AMapLocationClient.setApiKey("1c521d4b30c1b38e736fb7399d7b8ba0");
+  JmessageFlutter JMessage = JmessageFlutter();
+  JMessage.init(isOpenMessageRoaming: false, appkey: "70f52a8c5829884568ce751c");
+  JMessage.setDebugMode( enable: true );
   global.dio = initDio();
   runApp(new MaterialApp(
     title: "face",
